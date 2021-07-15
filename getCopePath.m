@@ -1,0 +1,6 @@
+function copesPath = getCopePath(experiment,Z,FSLModel,specie,r,sub)
+
+getDriveFolder;
+copesPath = [driveFolder,'\Results\',experiment,'\GLM\Z',num2str(Z),'\',...
+    sprintf('%03d',FSLModel),'\',specie,'\ROI\r',sprintf('%02d',r),'sub',...
+    sprintf('%03d',sub)];
