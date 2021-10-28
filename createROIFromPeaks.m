@@ -1,4 +1,4 @@
-function [copeList,copeInfo] = createROIFromPeaks(ROIFolder,clusterData,baseName,project,fslModel,specie,Z,sphereRad,contrastName,varargin)
+function [copeList,copeInfo] = createROIFromPeaks(ROIFolder,clusterData,baseName,specie,sphereRad,contrastName,varargin)
 maskType = getArgumentValue('maskType','sphere',varargin{:}); %takes 'sphere' or 'mask'
 clusterList = getArgumentValue('clusterList',[],varargin{:});
 createNii = getArgumentValue('createNii',false,varargin{:});

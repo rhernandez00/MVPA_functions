@@ -69,7 +69,7 @@ else %data from experiment (real) or else data from model
         
         stim1 = propTablePairs(nRow).([varName,'1']);
         stim2 = propTablePairs(nRow).([varName,'2']);
-        disp(['stim1: ', num2str(stim1), ' , stim2: ',num2str(stim2)]);
+        %disp(['stim1: ', num2str(stim1), ' , stim2: ',num2str(stim2)]);
         dissimilarity = getDissimilarity(stim1,stim2,model,'FSLModel',FSLModel,'runN',runN); %gets the dissimilarity according to the model
         
         

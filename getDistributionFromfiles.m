@@ -4,19 +4,21 @@ pThr = getArgumentValue('pThr',0.001,varargin{:});
 fileSuffix = getArgumentValue('fileSuffix','_p',varargin{:});
 thrType = getArgumentValue('thrType','lessThan',varargin{:});
 followText = getArgumentValue('followText',true,varargin{:});
-
+nReps = getArgumentValue('nReps',[],varargin{:});
 
 oldPath = pwd;
 cd(rndFolder);
 fileList = ls(['*',fileSuffix,'.nii.gz']);
-nReps = size(fileList,1);
-if nReps == 0
-    disp(['*',fileSuffix,'.nii.gz']);
-    disp('No files found');
-    
-    clustersSizes=0;
-    numOfClusters=0;
-    return
+if isempty(nReps)
+    nReps = size(fileList,1);
+    if nReps == 0
+        disp(['*',fileSuffix,'.nii.gz']);
+        disp('No files found');
+
+        clustersSizes=0;
+        numOfClusters=0;
+        return
+    end
 end
 
 clustConn = 6; %connections to count, either 6 or 27

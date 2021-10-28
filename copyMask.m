@@ -48,8 +48,8 @@ end
 %
 % clear all
 % getDriveFolder;
-% maskFolder = [driveFolder,'\Faces_Hu\CommonFiles\Human\BN'];
-% destinationFolder = 'BN';
+% maskFolder = ['D:\Raul\Gdrive\Results\Complex\GLM\Z31\010\D\ROI\r03'];
+% destinationFolder = 'FSLModel10m';
 % 
 % maskList = dir([maskFolder,'\*.nii.gz']);
 % maskList = {maskList.name};
@@ -57,10 +57,10 @@ end
 %     maskList{nMask} =  maskList{nMask}(1:end-7);
 % end
 % % experimentFolder = 'D:\Raul\data\Faces\FacesHSTD';
-% experimentFolder = 'D:\Raul\data\MNI';
+% experimentFolder = 'D:\Raul\data\Complex\ComplexDSTD';
 % for nMask = 1:length(maskList)
 %     fileName = maskList{nMask};
 %     subList = copyMask(fileName,'maskFolder',maskFolder,...
 %         'experimentFolder',experimentFolder,'destinationFolder',destinationFolder);
 % %     error('r')
-% end
+end

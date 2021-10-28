@@ -1,5 +1,6 @@
 function [results,tableNameS,saveTablePath] = makeTables(filePrefix,resultsPath,distributionFile,varargin)
 
+%distributionFile: 
 specie = getArgumentValue('specie','Dog',varargin{:});
 tThr = getArgumentValue('Thr',0.05,varargin{:}); %thr for t test
 saveTablePath = getArgumentValue('tablePath',resultsPath,varargin{:});
@@ -8,7 +9,7 @@ fileBase = getArgumentValue('fileBase','Barney2mm',varargin{:});
 calculateClusterSpread = getArgumentValue('calculateClusterSpread',true,varargin{:});
 clusterMin = getArgumentValue('clusterMin',0,varargin{:}); %minimum size of the cluster for the cluster spread
 fileSuffix = getArgumentValue('fileSuffix', '_t',varargin{:});
-statName = getArgumentValue('statName','t',varargin{:});
+statName = getArgumentValue('statName','t',varargin{:}); %stat used
 voxSize = getArgumentValue('voxSize',2,varargin{:});
 calculateSubPeaks = getArgumentValue('calculateSubPeaks',false,varargin{:}); 
 separation = getArgumentValue('separation',16,varargin{:});

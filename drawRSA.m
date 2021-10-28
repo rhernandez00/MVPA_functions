@@ -40,9 +40,11 @@ else
         else
             newElements = [propTable.(fieldName)]';
         end
+        
         try
             tblA.(fieldName) = newElements;
         catch
+            size(newElements)
             tblA.(fieldName) %#ok<NOPRT>
             newElements %#ok<NOPRT>
             error('r')

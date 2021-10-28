@@ -53,8 +53,8 @@ for nRun = 1:length(runsPossible)
         end
         if skipIfEmpty
             if isempty(indx2)
-%                 disp(['Warning: ', runFolder]);
-%                 disp(category)
+                disp(['Warning: ', runFolder]);
+                disp(category)
                 continue
             end
         end

@@ -24,6 +24,7 @@ function [fileListOut] = getSubList(fileListFull)
         subList = zeros(1,size(fileList,2));
         for nFile = 1:size(fileList,2)
             fileName = fileList{nFile};
+            disp(fileName)
             placeS = findstr(fileName,'sub'); %#ok<FSTR>
             sub = str2num(fileName(placeS+3:placeS+5)); %#ok<ST2NM>
             subList(nFile) = sub;
@@ -46,7 +47,11 @@ function [fileListOut] = getSubList(fileListFull)
     function [fileChoosen,indxList] = getFile(fileList,sub,runN)
 
         [fileList,indxList] = subIn(fileList,sub);
+%         for n = 1:numel(fileList)
+%             disp(fileList{n})
+%         end
         fileList = checkRun(fileList,runN);
+        
         if isempty(fileList)
             fileChoosen = [];
         else

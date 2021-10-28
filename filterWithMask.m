@@ -1,14 +1,17 @@
-function [BOLDFiltered,maskOut] = filterWithMask(BOLDimg,maskName,varargin)
+function [BOLDFiltered,maskOut,maskIndx] = filterWithMask(BOLDImg,maskName,varargin)
 %filters BOLD using maskName, maskName is found in the Labels2mm folder,
 %for a different folder, include argument 'maskPath'
 atlas = getArgumentValue('atlas',[],varargin{:}); %for use only when the mask is a number
-specie = getArgumentValue('specie',[],varargin{:}); %for use only when the mask is a number
+specie = getArgumentValue('specie','',varargin{:}); %for use only when the mask is a number
+keepVoxels = getArgumentValue('keepVoxels',true,varargin{:}); %true-keeps only within mask, false-erases within the mask
 getDriveFolder;
 switch specie
     case 'D' %Uses Kalman's
         maskPath = getArgumentValue('maskPath',[driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm'],varargin{:});
     case 'H' %uses AAL
         maskPath = getArgumentValue('maskPath',[driveFolder,'\Faces_Hu\CommonFiles\Human\AAL'],varargin{:});
+    case ''
+        maskPath = [];
 end
 
 if ischar(maskName) %the input is the name of the mask
@@ -23,26 +26,29 @@ else
     mask = logical(mask);
 end
 
+if ~keepVoxels
+    mask = ~mask;
+end
 
 
-for nVolume = 1:size(BOLDimg,4)
-    volume =  BOLDimg(:,:,:,nVolume);
-%      size(volume)
-%      size(mask)
-%      class(volume)
-%      class(mask)
-    if strcmp(class(volume),'single')
-        volumeFiltered = volume.* single(mask);
-    elseif strcmp(class(volume),'int16')
-        volumeFiltered = volume.* int16(mask);
-    elseif strcmp(class(volume),'double')
-        size(volume)
-        size(mask)
-        volumeFiltered = volume.* single(mask);
-    else
-        disp(class(volume));
+switch class(BOLDImg)
+    case 'single'
+        mask = single(mask);
+    case 'int16'
+        mask = int16(mask);
+    case 'double'
+        mask = single(mask);
+    otherwise
+        disp(class(BOLDImg));
         error('program new class designation')
-    end
+end
+
+totalVolumes = size(BOLDImg,4);
+BOLDFiltered = zeros(size(BOLDImg));
+for nVolume = 1:totalVolumes
+    volume =  BOLDImg(:,:,:,nVolume);
+    disp(['filtering volume: ',num2str(nVolume),' / ',num2str(totalVolumes)]);
+    volumeFiltered = volume.*(mask);
     try
         BOLDFiltered(:,:,:,nVolume) = volumeFiltered;
     catch
@@ -50,14 +56,6 @@ for nVolume = 1:size(BOLDimg,4)
         size(BOLDFiltered(:,:,:,nVolume))
     end
 end
-% BOLDFiltered = BOLD.img(mask);
-if strcmp(class(volume),'single')
-    maskOut = single(mask);
-elseif strcmp(class(volume),'int16')
-    maskOut = int16(mask);
-else
-    disp(class(volume));
-    error('program new class designation')
-end
-
+maskOut = mask;
+maskIndx = find(logical(maskOut)); %getting indx
  

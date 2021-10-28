@@ -25,6 +25,7 @@ isCoord = ~isempty(coords);
 
 %checks if the entry is in the table. True - loads into 'data'. False -
 %creates new entry
+% tablePath = [dropboxFolder,'\MVPA\Complex\RSA\dataTable.mat'];
 [found,data,~,outImg] = checkTable(tablePath,isCoord,mask,coords,rad,sub,runN,...
     FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName);
 if found == 0
@@ -71,57 +72,10 @@ else
     disp('Not found, getting from images');
 end
 
-switch fileTypeToLoad
-    case 't'
-        fileToLoad = 'tstat1';%options are tstat1, zstat1, cope1
-        tileToLoad2 = 'tstat';
-    case 'z'
-        fileToLoad = 'zstat1';%options are tstat1, zstat1, cope1
-        tileToLoad2 = 'zstat';
-    case 'c'
-        fileToLoad = 'cope1';%options are tstat1, zstat1, cope1
-        tileToLoad2 = 'cope';
-    case 'p'
-        fileToLoad = 'pe1';%options are tstat1, zstat1, cope1
-        tileToLoad2 = 'pe';
-    otherwise
-        fileTypeToLoad
-        error('Wrong fileType, accepted are: t, z, p or cope');
-end
-
-if gfeat
-    if isempty(inputZ)
-        error('must input Z');
-    end
-    if sub == 0
-        fileName = [resultsPath,'\',experiment,'\GLM\',sprintf('%03d',FSLModel),'\',...
-            specie,'\',num2str(inputZ*10),'\run',sprintf('%03d',runN),'.gfeat\cope',...
-            num2str(nCat),'.feat\stats\',tileToLoad2,'1.nii.gz'];
-    else
-        if runN ~= 0
-            error(['Check runN, it must be 0. Currently it is: ',num2str(runN)]);
-        end
-        fileName = [resultsPath,'\',experiment,'\GLM\',sprintf('%03d',FSLModel),'\',...
-            specie,'\',num2str(inputZ*10),'\sub',sprintf('%03d',sub),'.gfeat\cope',...
-            num2str(nCat),'.feat\stats\',tileToLoad2,'1.nii.gz'];
-    end
-    BOLD = load_untouch_niiR(fileName);
-    fullImg = BOLD.img;
-else
-    if loadFromBOLD
-        fileName = [filesPath,'\',sprintf('%03d',FSLModel),'\data\sub',...
-            sprintf('%03d',sub),'\BOLD\task',sprintf('%03d',task),'_run',...
-            sprintf('%03d',runN),'\BOLD.nii.gz'];
-        BOLD = load_untouch_niiR(fileName);
-        fullImg = BOLD.img(:,:,:,nCat);
-    else
-        fileName = [filesPath,'\',sprintf('%03d',FSLModel),'\data\sub',...
-            sprintf('%03d',sub),'\BOLD\task',sprintf('%03d',task),'_run',...
-            sprintf('%03d',runN),'\.feat\stats\',tileToLoad2,num2str(nCat),'.nii.gz'];
-        BOLD = load_untouch_niiR(fileName);
-        fullImg = BOLD.img;
-    end
-end
+%Loads an image of results from FSL
+[fullImg,fileName]= loadFSLRes(experiment,specie,FSLModel,sub,runN,nCat,...
+    'fileTypeToLoad',fileTypeToLoad,'task',task,'loadFromBOLD',loadFromBOLD,...
+    'resultsPath',resultsPath,'gfeat',gfeat,'filesPath',filesPath,'basePath',basePath);
 disp(fileName);
 
 if isempty(mask)%if there is no mask, creates a sphere and gets the data from within the sphere
@@ -133,9 +87,7 @@ if isempty(mask)%if there is no mask, creates a sphere and gets the data from wi
 else %input as either mask or name of the mask
     if numel(mask) > 1 %input as mask
         maskImg = logical(mask);
-        
     else %input as name of mask
-%         size(mask)
         maskData = load_untouch_niiR([maskPath,'\',mask,'.nii.gz']); %loads the designated mask
         maskImg = maskData.img;
         maskImg = single(logical(maskImg)); %binarizes whatever is in mask
@@ -166,7 +118,7 @@ if saveDataTable % This is to save the data loaded in to a table for future use
     dataTable(nRow).task = task;%task
     dataTable(nRow).fileTypeToLoad = fileTypeToLoad; %#ok<*STRNU>
     dataTable(nRow).outImg = outImg;
-% dataTable
+%     dataTable(end)
     disp([tablePath,' saved']);
     save(tablePath,'dataTable');
 end

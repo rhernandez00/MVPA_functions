@@ -14,11 +14,11 @@ absVals = getArgumentValue('absVals',false,varargin{:});
 if ~isempty(fImg)
     error('deprecated, use mpFiltered or ZFiltered');
 end
+
 %false, compares each voxel with voxels in the same location, true -
 %compares with all the voxels in the map
 compareWithAll = getArgumentValue('compareWithAll', false, varargin{:}); 
-%to filter with cortex
-cortex = getArgumentValue('cortex',false,varargin{:});
+cortex = getArgumentValue('cortex',false,varargin{:});%to filter with cortex
 getDriveFolder;
 cxFile = getArgumentValue('cortexFile','MNI2mm',varargin{:});
 

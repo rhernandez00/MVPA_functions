@@ -1,7 +1,9 @@
 
 function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad,sub,runN,FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName)
     %maskName is used only for gfeat
+    %disp(['Checking: ',tablePath]);
     if exist([tablePath])
+        %disp('it exist!');
         load(tablePath);
     else
         disp('Table not found');

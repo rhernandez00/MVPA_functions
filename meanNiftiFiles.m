@@ -35,9 +35,6 @@ for i = 1:dimensions(1)
             end
             SDresults.img(i,j,k) = nanstd(val);
             meanCalc(i,j,k) = nanmean(val);
-            
-            
-
         end
     end
 end

@@ -3,7 +3,6 @@ atlasFile = getArgumentValue('ref','Barney2mm',varargin{:});
 getVals = getArgumentValue('getVals',false,varargin{:}); %outputs structure
 % used for conversion (I have no idea why this was useful, probably for testing)
 verbosity = getArgumentValue('verbosity','full',varargin{:});
-
 if length(coordsIn) ~= 3
     error('You must introduce 3 coordinates');
 end
@@ -57,11 +56,13 @@ if getVals %erases output and gives back the structure of vals used for conversi
     coordsOut.baseY = baseY;
     coordsOut.baseZ = baseZ;
     coordsOut.resolution = resolution;
+    return
 else
     if strcmp(verbosity,'full')
         disp(['Reference used: ', atlasFile]);
     end
 end
+
 x = coordsOut(1);
 y = coordsOut(2);
 z = coordsOut(3);

@@ -33,8 +33,8 @@ else
     thr = 0;
 end
 
-[imgs,oldPath,nFiles,dataF] = getFileList(folder,'fileList',fileList,...
-    'cortex',cortex,'cortexFile',cxFile);
+[imgs,~,nFiles,dataF] = getFileList(folder,'fileList',fileList,...
+    'cortex',cortex,'cortexFile',cxFile,'fileEnding',fileEnding);
 % dataF = load_untouch_niiR(imgs{1});
 
 nanThreshold = nFiles*0.1;
@@ -44,7 +44,7 @@ SDresults = dataF;
 tResults = dataF;
 accuracy = dataF;
 dimensions = size(imgs{1});
-totalVox = dimensions(1)*dimensions(2)*dimensions(3);
+totalVox = dimensions(1)*dimensions(2)*dimensions(3); %#ok<NASGU>
 for i = 1:dimensions(1)
     disp(['dimension: ',num2str(i), ' / ', num2str(dimensions(1)), ' number of files ', num2str(nFiles)]);    
     for j = 1:dimensions(2)
@@ -69,12 +69,12 @@ for i = 1:dimensions(1)
                 end
                 if media < 0
                     disp(['x = ',num2str(i),' y = ',num2str(j), ' z = ',num2str(k)]);
-                    disp([num2str(val)]);
+                    disp(num2str(val));
                     error('something is wrong, performance can not be negative')
                 end
 
                 if media > thr
-                    [h,p,ci,stats] = ttest(val,tReference,'Tail','right');
+                    [~,p,~,stats] = ttest(val,tReference,'Tail','right');
                     t = stats.tstat;
                 else
                     t = 0;
@@ -82,7 +82,7 @@ for i = 1:dimensions(1)
                 end
             else
                 if media ~= 0
-                    [h,p,ci,stats] = ttest(val,tReference,'Tail','right');
+                    [~,p,~,stats] = ttest(val,tReference,'Tail','right');
                     t = stats.tstat;
                 else
                     t = 0;
@@ -98,8 +98,8 @@ for i = 1:dimensions(1)
         end
     end
 end
-cd(oldPath);
-disp(['Saving results']);
+% cd(oldPath);s
+disp('Saving results');
 
 if pImg
     save_untouch_nii(pValues,[resultsFile,'_p.nii.gz']);

@@ -21,13 +21,15 @@ switch experiment
                 options.stimsPerCat = [12,12,12,12];
                 options.runs = 1:6;
             case 8
-                
+
                 options.totalStims = 7;
                 options.catlen = 7;
-                options.catTypes = {'Car','CatB','DogB','HumB','CatF','DogF','HumF'};
+                options.catTypes = {'CatF','CatB','DogF','DogB','HumF','HumB','Car'};
+%                 options.catTypes = {'CatB','DogB','HumB','CatF','DogF','HumF','Car'};
                 options.stimsPerCat = [1,1,1,1,1,1,1];
-                options.runs = 1:6; %#ok<STRNU>
-                error('check catTypes, it has a different order in onenote')
+                options.runs = 1:6; 
+                warning('previous version had catTypes weird')
+                %options.catTypes = {'Car','CatB','DogB','HumB','CatF','DogF','HumF'};
             case 10 %replacing 8, that this is not actually the contrasts
                 options.totalStims = 7;
                 options.catlen = 7;
@@ -71,6 +73,18 @@ switch experiment
                 options.stimsPerCat = [12,12,11,10,8,9,8];
                 options.runs = 6;
             case 50
+                options.totalStims = 7;
+                options.catlen = 7;
+                options.catTypes = {'CatF','CatB','DogF','DogB','HumF','HumB','Car'};
+                options.stimsPerCat = [1,1,1,1,1,1,1];
+                options.runs = [2,4,6];
+            case 52
+                options.totalStims = 7;
+                options.catlen = 7;
+                options.catTypes = {'CatF','CatB','DogF','DogB','HumF','HumB','Car'};
+                options.stimsPerCat = [1,1,1,1,1,1,1];
+                options.runs = [1,3,5];
+            case 53
                 options.totalStims = 7;
                 options.catlen = 7;
                 options.catTypes = {'CatF','CatB','DogF','DogB','HumF','HumB','Car'};
@@ -131,3 +145,4 @@ if catGroup > 1
 else
     nStim = nCat;
 end
+

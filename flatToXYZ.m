@@ -1,4 +1,5 @@
 function [x,y,z] = flatToXYZ(flat,template, varargin)
+%template can be the name of the template, a nifti structure or a matrix
 templateFormat = getArgumentValue('templateFormat','nifti',varargin{:}); %takes nifti or matrix
 %takes an index from a vectorized image and gives back the coordinates
 %template is the file from which the index came from

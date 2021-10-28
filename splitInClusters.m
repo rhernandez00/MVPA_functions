@@ -16,6 +16,7 @@ clusterListVals = clusterList;
 clusterSizes = zeros(1,CC.NumObjects);
 for j = 1:CC.NumObjects %goes through each cluster found
     coords = CC.PixelIdxList{j};
+    
     mapOut(:) = 0;
     mapOut(coords) = 1;
     clusterList{j} = mapOut; %gets the map of each cluster
@@ -26,8 +27,8 @@ for j = 1:CC.NumObjects %goes through each cluster found
     clusterVals(indx) = mapNotBin(indx);
     clusterListVals{j} = clusterVals;
     %------------
-    
-    clusterSizes(j) = size(coords,1);
+%     clusterSizes(j) = sum(mapOut(:)~=0); %option 2
+    clusterSizes(j) = numel(coords); %option 1
 end
 
 [~,I] = sort(clusterSizes);

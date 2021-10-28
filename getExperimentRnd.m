@@ -1,7 +1,7 @@
 % function [tResults,pValues]= getExperimentRnd(repsPath,repResultsPath,nParticipants,categories,nReps,varargin)
 function getExperimentRnd(repsPath,repResultsPath,nParticipants,categories,nReps,varargin)
 initialRep = getArgumentValue('initialRep',1,varargin{:});
-testType = getArgumentValue('testType','ttest',varargin{:}); %test to run, takes 'ttest', 'ttest2', 'binomial'
+testType = getArgumentValue('testType','ttest',varargin{:}); %test to run, takes 'ttest', 'ttest2', 'binomial' 'mean'
 nRuns = getArgumentValue('nRuns',0,varargin{:});
 fileEnding = getArgumentValue('fileEnding','',varargin{:});
 filteredImg = getArgumentValue('filtered',false,varargin{:});
@@ -10,7 +10,7 @@ tImg = getArgumentValue('t',true,varargin{:});
 pImg = getArgumentValue('p',true,varargin{:});
 tReference = getArgumentValue('tReference',0,varargin{:});
 randMode = getArgumentValue('randMode','byParticipant',varargin{:});
-
+SDImg = getArgumentValue('SDImg',false,varargin{:});
 %for ttest2
 directional = getArgumentValue('directional',false,varargin{:});
 differenceImg = getArgumentValue('differenceImg',false,varargin{:});
@@ -47,23 +47,20 @@ for j = initialRep:nReps
                     fileName = fileListFull{imgList(k)};
                     fileList{k} = fileName;
                 end
-            case 'bySubList' %creates a sublist, having a single file per participant
-%                 class(fileListFull)
-                
+            case 'bySubList' %creates a sublist, having a single file per participant               
                 fileList = getSubList(fileListFull);
-%                 size(fileList)
-%                 numel(fileList)
-%                 error('r');
             otherwise
                 error('Wrong randMode, accepts bySubList, byParticipant');
         end
         switch testType
-%             case 'nonparametric'%should write
-                
+            case 'mean'
+                meanNiftiFiles(repsPath,repResultsFile,...
+                    'fileList',fileList,'SDImg',SDImg);
             case 'ttest'
-%                 [tResults,~,pValues] = ttestSearchlight(repsPath,categories,repResultsFile,'fileList',fileList,'filtered',filteredImg,'t',tImg,'meanPerf',meanPerfImg,'p',pImg, 'tReference', tReference);
-                ttestSearchlight(repsPath,categories,repResultsFile,'fileList',fileList,'filtered',filteredImg,'t',tImg,'meanPerf',meanPerfImg,'p',pImg, 'tReference', tReference);
-%                 return
+                ttestSearchlight(repsPath,categories,repResultsFile,...
+                    'fileList',fileList,'filtered',filteredImg,'t',tImg,...
+                    'meanPerf',meanPerfImg,'p',pImg, 'tReference', tReference,...
+                    'SDImg',SDImg);
             case 'binomial'
                 meanPerfImg = true;
                 binomialSearchlight(repsPath,categories,nRuns,repResultsFile,'fileList',fileList,'filtered',filteredImg,'meanPerf',meanPerfImg,'p',pImg);
@@ -72,16 +69,11 @@ for j = initialRep:nReps
                 imgList = randsample(1:size(fileListFull,2),nParticipants,false);
                 fileList2 = cell(nParticipants,1);
                 for k = 1:nParticipants
-                    %fileList{k} = ['STDrep',sprintf('%03d',imgList(k)),'task1model2r3sub001.nii.gz'];
                     fileName = fileListFull{imgList(k)};
-%                     fileName = strtrim(fileName);
                     fileList2{k} = fileName;
                 end
                 ttest2Searchlight(repsPath,fileList,fileList2,repResultsFile,'directional',directional,...
-                    'meanImg',meanPerfImg,'filtered',filteredImg,'t',tImg,'p',pImg,'differenceImg',differenceImg);
-       
-                
-                
+                    'meanImg',meanPerfImg,'filtered',filteredImg,'t',tImg,'p',pImg,'differenceImg',differenceImg);         
             otherwise
                 error('Wrong test type, accepted are ttest, ttest2, binomial');
         end

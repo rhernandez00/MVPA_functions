@@ -39,6 +39,7 @@ tResults = dataF;
 tResultsAbs = dataF;
 dimensions = size(imgs{1});
 totalVox = dimensions(1)*dimensions(2)*dimensions(3); %#ok<NASGU>
+imgVals = zeros(dimensions(1),dimensions(2),dimensions(3),length(imgs));
 for i = 1:dimensions(1)
     disp(['dimension: ',num2str(i), ' / ', num2str(dimensions(1)), ' number of files ', num2str(nFiles)]);    
     for j = 1:dimensions(2)
@@ -57,7 +58,7 @@ for i = 1:dimensions(1)
                 p = 1;
             end
 
-            
+            imgVals(i,j,k,:) = val;
             pValues.img(i,j,k) = p;
             meanPerformance.img(i,j,k) = media;
             tResults.img(i,j,k) = t;
@@ -80,6 +81,11 @@ if ~isempty(coordList)
         coordRes(nCoord).rho = tResults.img(coords(1),coords(2),coords(3)); %#ok<AGROW>
         coordRes(nCoord).p = pValues.img(coords(1),coords(2),coords(3)); %#ok<AGROW>
         coordRes(nCoord).coords =coords; %#ok<AGROW>
+        vals = imgVals(coords(1),coords(2),coords(3),:);
+        vals = vals(:);
+        coordRes(nCoord).vals = vals;
+        coordRes(nCoord).corrVals = corrVals;
+        
     end
 else
     coordRes = [];
