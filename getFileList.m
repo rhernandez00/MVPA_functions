@@ -15,9 +15,7 @@ end
 
 if isempty(fileList)
     disp('fileList is empty, checking files in path');
-    fileList = dir([folder,'\',fileStart,'*',fileEnding,'.nii.gz']);
-    fileList = {fileList.name}';
-    %fileList = ls(['*',fileEnding,'.nii.gz']);
+    fileList = getFileListOnly(folder,'fileStart',fileStart,'fileEnding',fileEnding);
     disp(fileList);
     imgs = cell(1,size(fileList,1));
     

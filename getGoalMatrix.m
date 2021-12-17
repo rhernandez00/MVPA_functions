@@ -3,7 +3,7 @@ function [goalMatrix,propTablePairs] = getGoalMatrix(model,varargin)
 getDriveFolder
 experiment = getArgumentValue('experiment','Complex',varargin{:});
 %assumes that I'm requesting all six runs
-runsToDo = getArgumentValue('run',[], varargin{:}); %if no run is requested, it 
+runsToDo = getArgumentValue('runN',[], varargin{:}); %if no run is requested, it 
 realData = getArgumentValue('realData',false,varargin{:});
 nParticipant = getArgumentValue('nParticipant',[],varargin{:});
 dataPath = getArgumentValue('dataPath',[driveFolder,'\Results\',experiment,'\RSA\modelsByParticipant'],varargin{:});
@@ -21,7 +21,6 @@ addpath([dropboxFolder,'\MVPA\',experiment,'\functions']);
 addpath([dropboxFolder,'\MVPA\',experiment,'\RSA']);
 
 propTablePairs = getPropTablePairs(runsToDo,'FSLModel',FSLModel); %gets the list of stimuli
-% runsToDo =1:6;
 goalMatrix = zeros(1,size(propTablePairs,2));
 counter = 1;
 
@@ -70,7 +69,7 @@ else %data from experiment (real) or else data from model
         stim1 = propTablePairs(nRow).([varName,'1']);
         stim2 = propTablePairs(nRow).([varName,'2']);
         %disp(['stim1: ', num2str(stim1), ' , stim2: ',num2str(stim2)]);
-        dissimilarity = getDissimilarity(stim1,stim2,model,'FSLModel',FSLModel,'runN',runN); %gets the dissimilarity according to the model
+        dissimilarity = getDissimilarity(stim1,stim2,model,'FSLModel',FSLModel,'runN',[]); %gets the dissimilarity according to the model
         
         
         goalMatrix(nRow) = dissimilarity;

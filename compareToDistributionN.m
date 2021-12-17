@@ -4,7 +4,7 @@ function [dataP,distribution,mu,sigma] = compareToDistributionN(fileToCompare,va
 %columns
 side = getArgumentValue('side','moreThan',varargin{:});
 suffix = getArgumentValue('suffix','_mp',varargin{:});
-distributionNifti = getArgumentValue('distributionNifti',[],varargin{:});
+distributionNifti = getArgumentValue('distributionNifti',[],varargin{:}); %name of file without _mp
 if isempty(distributionNifti)
     error('Must introduce mean file');
 else

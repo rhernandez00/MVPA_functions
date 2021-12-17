@@ -41,14 +41,36 @@ if oldVersion
                 case 'D'
                     cxFile = 'Barney2mm';
                     switch coordSet
-                        case 'R_EMG'%Early visual cortex model 11,-25,26
-                            coordsPossible = {[22,18,26]}; 
-                        case 'LMG' %MVPA block peak 1: -7,-39,-24
+                        case 'LOC'
+                            coordsPossible = {[24,19,23]};
+                        case 'V1'
+                            coordsPossible = {[14,13,20],[22,14,20]};
+                        case 'LMG' %MVPA, STDblock peak 1
                             coordsPossible = {[13,11,25]};
-                        case 'RmESG' %MVPA block peak 2: 23,-23,20 
-                            coordsPossible = {[28,19,23]};
-                        case 'LcSSG' %MVPA block peak 3: -23,-27,8
+                        case 'LcSSG' %MVPA, STDblock peak 2
                             coordsPossible = {[5,17,17]};
+                        case 'RmESG' %MVPA, STDblock peak 3
+                            coordsPossible = {[28,19,23]};
+                        case 'LcSSGV1' %V1 peak
+                            coordsPossible = {[6,19,15]};
+                        case 'LOGV1'%V1 peak
+                            coordsPossible = {[13,10,21]};
+                        case 'LSpGV1'%V1 peak
+                            coordsPossible = {[13,18,24]};
+                        case 'RcSGV1'%V1 peak
+                            coordsPossible = {[25,25,12]};
+                        case 'LmSSG'%RSA Mean_VTCModel peak 
+                            coordsPossible = {[8,20,23]};
+
+                        case 'LSG' %deprecated, I don't know where it comes from
+                            coordsPossible = {[15,12,21]};
+                        case 'RcSG' %deprecated, I don't know where it comes from
+                            coordsPossible = {[28,26,13]};
+                        case 'RmSSG' %deprecated, I don't know where it comes from
+                            coordsPossible = {[26,16,25]};
+
+                        case 'LOG' %deprecated, I don't know where it comes from
+                            coordsPossible = {[14,13,20]};
                         otherwise
                             disp(coordSet);
                             error('Set not found');

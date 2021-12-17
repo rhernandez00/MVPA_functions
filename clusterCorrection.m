@@ -1,8 +1,6 @@
 function [clusterSizeList,data,clusP] = clusterCorrection(fileToCorrect,distributionFile,clusterP,varargin)
 binarize = getArgumentValue('Binarize',false,varargin{:});
-if nargin < 3
-    
-    
+if nargin < 3    
     clusterSizeSelected = distributionFile;
     clusterCorrectionSim(fileToCorrect,clusterSizeSelected);
 else

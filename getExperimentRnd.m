@@ -23,12 +23,7 @@ if strcmp(testType,'binomial')
 end
 
 currentFolder = pwd;
-
-
-cd(repsPath)
-% fileListFull = ls('*.nii.gz');
-fileListFull = dir(['*',fileEnding,'.nii.gz']);
-fileListFull = {fileListFull.name};
+fileListFull = getFileListOnly(repsPath,'fileEnding',fileEnding);
 
 for j = initialRep:nReps
     disp(['repetition ', num2str(j), ' out of ', num2str(nReps)]);

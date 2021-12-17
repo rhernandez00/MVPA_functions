@@ -1,4 +1,4 @@
-function meanNiftiFiles(folderIn,fileOut,varargin)
+function fileList = meanNiftiFiles(folderIn,fileOut,varargin)
 %creates a mean file and std to use for non-parametric comparison
 fileList = getArgumentValue('fileList',[],varargin{:});
 cortex = getArgumentValue('cortex',false,varargin{:});
@@ -9,7 +9,6 @@ SDImg = getArgumentValue('SDImg',true,varargin{:});
 
 [imgs,oldPath,nFiles,dataF] = getFileList(folderIn,'fileList',fileList,...
     'cortex',cortex,'cortexFile',cortexFile);
-
 nanThreshold = nFiles*nanPercentage;
 meanImg = dataF;
 SDresults = dataF;
