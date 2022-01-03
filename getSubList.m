@@ -1,10 +1,10 @@
-function [fileListOut] = getSubList(fileListFull)
+function [fileListOut,subList,runList] = getSubList(fileListFull)
     fileList = fileListFull;
 
     fileListOut = {};
     subList = getSubList(fileList);
     runList = getRunList(fileList);
-    for nSub = 1:length(subList)
+    for nSub = 1:numel(subList)
         sub = subList(nSub);
         for nRun = 1:length(runList)
             runN = runList(nRun);
@@ -21,8 +21,8 @@ function [fileListOut] = getSubList(fileListFull)
 %     fileListOut = fileListOut(:);
 
     function subList = getSubList(fileList)
-        subList = zeros(1,size(fileList,2));
-        for nFile = 1:size(fileList,2)
+        subList = zeros(1,numel(fileList));
+        for nFile = 1:numel(fileList)
             fileName = fileList{nFile};
             disp(fileName)
             placeS = findstr(fileName,'sub'); %#ok<FSTR>
@@ -33,8 +33,8 @@ function [fileListOut] = getSubList(fileListFull)
     end
 
     function runList = getRunList(fileList)
-        runList = zeros(1,size(fileList,2));
-        for nFile = 1:size(fileList,2)
+        runList = zeros(1,numel(fileList));
+        for nFile = 1:numel(fileList)
             fileName = fileList{nFile};
             placeS = findstr(fileName,'run');
             run = str2num(fileName(placeS+3:placeS+4));
@@ -55,14 +55,14 @@ function [fileListOut] = getSubList(fileListFull)
         if isempty(fileList)
             fileChoosen = [];
         else
-            indx = randsample(1:size(fileList,2),1);
+            indx = randsample(1:numel(fileList),1);
             fileChoosen = fileList{indx};
         end
     end
 
     function [fileListOut,indxList] = subIn(fileList,sub)
         indxList = [];
-        for nFile = 1:size(fileList,2)
+        for nFile = 1:numel(fileList)
             fileName = fileList{nFile};
             if contains(fileName,['sub',sprintf('%03d',sub)])
                 indxList = [indxList;nFile];
@@ -74,7 +74,7 @@ function [fileListOut] = getSubList(fileListFull)
 
     function fileListOut = checkRun(fileList,runN)
         indxList = [];
-        for nFile = 1:size(fileList,2)
+        for nFile = 1:numel(fileList)
             fileName = fileList{nFile};
             if contains(fileName,['run',sprintf('%02d',runN)])
                 indxList = [indxList;nFile]; %#ok<*AGROW>

@@ -9,7 +9,10 @@ meanPerfImg = getArgumentValue('meanPerf',false,varargin{:});
 tImg = getArgumentValue('t',true,varargin{:});
 pImg = getArgumentValue('p',true,varargin{:});
 tReference = getArgumentValue('tReference',0,varargin{:});
-randMode = getArgumentValue('randMode','byParticipant',varargin{:});
+randMode = getArgumentValue('randMode','byParticipant',varargin{:}); 
+%'byParticipant' - takes n samples from the whole file list
+%'bySubList' %creates a sublist, having a single file per participant               
+
 SDImg = getArgumentValue('SDImg',false,varargin{:});
 %for ttest2
 directional = getArgumentValue('directional',false,varargin{:});
@@ -32,7 +35,8 @@ for j = initialRep:nReps
     if exist([repResultsFile,'_p.nii.gz'])
         disp(['File exist, skipping ', repResultsFile])
     else
-        fclose(fopen([repResultsFile,'_p.nii.gz'],'w'));
+        fclose(fopen([repResultsFile,'_p.nii.gz'],'w')); %creates a p file
+        %to mark that the script is working on it
 
         switch randMode
             case 'byParticipant' %takes n samples from the whole file list
@@ -43,9 +47,15 @@ for j = initialRep:nReps
                     fileList{k} = fileName;
                 end
             case 'bySubList' %creates a sublist, having a single file per participant               
+                [fileListOut,subList,runList] = getSubList(fileListFull);
                 fileList = getSubList(fileListFull);
             otherwise
                 error('Wrong randMode, accepts bySubList, byParticipant');
+        end
+        if numel(fileList) ~= nParticipants
+            pFile = [repResultsFile,'_p.nii.gz'];
+            delete(pFile)
+            error(['Wrong number of files expected: ', num2str(nParticipants), ', found in list: ', num2str(numel(fileList))]);
         end
         switch testType
             case 'mean'

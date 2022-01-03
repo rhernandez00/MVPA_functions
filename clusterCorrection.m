@@ -8,7 +8,7 @@ else
     load(distributionFile);
 
     clustersSizes = clustersSizes(clustersSizes>1);
-    size(clustersSizes)
+    size(clustersSizes);
     % clustersSizes
     %finding the cluster size and showing it
     sizeTarget = 0;

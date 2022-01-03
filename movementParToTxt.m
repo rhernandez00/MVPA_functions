@@ -1,4 +1,6 @@
-function [lostVolumes,totalVolumes,matTxt,fwd] = movementParToTxt(project,specie,thr,participant,run,varargin)
+function [lostVolumes,totalVolumes,matTxt,fwd,parFile] = movementParToTxt(project,specie,thr,participant,run,varargin)
+if run > 1
+    error('Correct for first volume increased movement');
 getDriveFolder;
 filesPathMovement = getArgumentValue('pathIn',[driveFolder,'\Results\',project,'\movement'],varargin{:});
 savePath = getArgumentValue('pathOut',['D:\Raul\results\',project,'\movement\',specie],varargin{:});
@@ -7,6 +9,7 @@ saveTxt = getArgumentValue('saveTxt',true,varargin{:});
 cfg.prepro_suite =  'fsl';
 cfg.radius = 28;
 cfg.motionparam =[filesPathMovement,'\',project,specie,sprintf('%03d',participant),'_run',num2str(run),'.par'];
+parFile  = [filesPathMovement,'\',project,specie,sprintf('%03d',participant),'_run',num2str(run),'.par'];
 disp(['Running fwd for: ',cfg.motionparam]);
 [fwd,~]=bramila_framewiseDisplacement(cfg);
 vals = fwd;

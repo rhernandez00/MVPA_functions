@@ -4,6 +4,7 @@ function [dataP,distribution,mu,sigma] = compareToDistributionN(fileToCompare,va
 %columns
 side = getArgumentValue('side','moreThan',varargin{:});
 suffix = getArgumentValue('suffix','_mp',varargin{:});
+mul = getArgumentValue('mul',1,varargin{:});
 distributionNifti = getArgumentValue('distributionNifti',[],varargin{:}); %name of file without _mp
 if isempty(distributionNifti)
     error('Must introduce mean file');
@@ -50,7 +51,7 @@ for nVox = 1:length(indx)
     vox = indx(nVox);
     val = dataMean.img(vox);
     mu = dataMu.img(vox);
-    sigma = dataSigma.img(vox);
+    sigma = dataSigma.img(vox)*mul;
     if isnan(mu) %if is nan, assign default values
         p = 1;
         z = 0;
