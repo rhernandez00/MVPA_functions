@@ -1,7 +1,7 @@
 function res = calculateDissimilarityTable(experiment,FSLModel,specie,subsPossible,varargin)
 %calculates a table where it compares sets of voxels of given categories
 %outputs the table
-sameRunOp = getArgumentValue('sameRun','same',varargin{:}); %takes same,different,all (possible combinations)
+sameRunOp = getArgumentValue('sameRun','same',varargin{:}); %takes maskN, same,different,all (possible combinations)
 sameStimOp = getArgumentValue('sameStim','all',varargin{:});%takes same,different,all (possible combinations)
 runsPossible = getArgumentValue('runs',[],varargin{:}); %runs to test
 verb = getArgumentValue('verb',true,varargin{:}); %if true prints during execution
@@ -15,7 +15,8 @@ nReps = getArgumentValue('nReps',[],varargin{:}); %if a number is introduced,
 %that will be the number of permutations to run instead of the actual measurement
 modelName = getArgumentValue('modelName','DSMV1',varargin{:}); %in case of using model. Only DSMV1 for now
 
-if strcmp(regionType,'mask')
+
+if strcmp(regionType,'maskN')
     getDriveFolder;
     maskPath = getArgumentValue('maskPath',[driveFolder,'\Results\',experiment,'\ROIs'],varargin{:});
 end
@@ -24,6 +25,7 @@ end
 distanceCorrelation = getArgumentValue('distanceCorrelation',true,varargin{:}); % calculate or not correlation distance
 Spearman = getArgumentValue('Spearman',false,varargin{:});
 Pearson = getArgumentValue('Pearson',false,varargin{:});
+Mah = getArgumentValue('Mah',false,varargin{:});
 
 [~,~,options] = getStimType(experiment,FSLModel,1,1); %gets info on the experiment
 if isempty(runsPossible) %if empty, gets it from the options
@@ -112,7 +114,8 @@ for nSub = 1:length(subsPossible)
                 vector2 = loadFSLMaps(experiment,specie,FSLModel,sub,runN2,nCat2,...
                     'coords',coords,'rad',r,'tablePath',tablePathFile,...
                     'fileTypeToLoad',fileTypeToLoad);
-            case 'mask'
+            case 'maskN'
+                disp(['running mask: ', mask])
                 vector1 = loadFSLMaps(experiment,specie,FSLModel,sub,...
                     runN1,nCat1,'mask',mask,'tablePath',tablePathFile,...
                     'maskPath',maskPath,'fileTypeToLoad',fileTypeToLoad);
@@ -166,6 +169,18 @@ for nSub = 1:length(subsPossible)
                 end
             end
             infoTable.pearson(nRow) = rho;
+        end
+        if Mah
+            if isempty(nReps)
+                mahD = pdist2(vector1,vector2,'mahalanobis'); %calculates  correlation distance
+            else %calculates permutations instead
+                mahD = zeros(1,nReps);
+                for rep = 1:nReps
+                    vector1 = shake(vector1);
+                    mahD(rep) = pdist2(vector1,vector2,'mahalanobis');
+                end
+            end
+            infoTable.distanceCorrelation(nRow) = mahD;
         end
         infoTable.sub(nRow) = sub;
     end

@@ -25,6 +25,7 @@ goalMatrix = zeros(1,size(propTablePairs,2));
 counter = 1;
 
 if realData %data from experiment (real) or else data from model
+    disp('Getting dissimilarity from data.')
     if length(nParticipant) > 1
         goalAll = zeros(length(nParticipant).*length(runsToDo),size(propTablePairs,2));
         for nRun = 1:length(runsToDo)
@@ -34,9 +35,12 @@ if realData %data from experiment (real) or else data from model
                 goalMatName = [dataPath,'\',specie,'sub',sprintf('%03d',participant),'run',sprintf('%02d',runN),'_',model,'.mat'];
                 disp(goalMatName)
                 if exist(goalMatName,'file')
+                    
                     mat = load(goalMatName);
                 else
+                    
                     disp(model)
+                   
                     vector = getGoalVectorFromData(experiment,specie,...
                         participant,FSLModel,model,...
                         'saveModel',saveModel,'runN',runN,'av',av,...
@@ -53,8 +57,10 @@ if realData %data from experiment (real) or else data from model
     else
         goalMatName = [dataPath,'\',specie,'sub',sprintf('%03d',nParticipant),'run',sprintf('%02d',runN),'_',model,'.mat'];
         if exist(goalMatName,'file')
+            disp(['Loading ', goalMatName])
             mat = load(goalMatName);
         else
+             disp('Really getting dissimilarity from data')
             vector = getGoalVectorFromData(experiment,specie,...
                 nParticipant,FSLModel,model,...
                 'saveModel',saveModel,'runN',runN,'av',av,...
@@ -63,7 +69,8 @@ if realData %data from experiment (real) or else data from model
         end
         goalMatrix = mat.vector;
     end
-else %data from experiment (real) or else data from model 
+else %data from experiment (real) or else data from model
+    disp('Getting dissimilarity from model')
     for nRow = 1:size(propTablePairs,2)
         
         stim1 = propTablePairs(nRow).([varName,'1']);

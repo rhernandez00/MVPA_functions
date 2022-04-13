@@ -1,6 +1,5 @@
 function [lostVolumes,totalVolumes,matTxt,fwd,parFile] = movementParToTxt(project,specie,thr,participant,run,varargin)
-if run > 1
-    error('Correct for first volume increased movement');
+
 getDriveFolder;
 filesPathMovement = getArgumentValue('pathIn',[driveFolder,'\Results\',project,'\movement'],varargin{:});
 savePath = getArgumentValue('pathOut',['D:\Raul\results\',project,'\movement\',specie],varargin{:});

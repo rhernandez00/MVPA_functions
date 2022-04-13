@@ -65,20 +65,7 @@ end
 
 %
 
-RSAmat = [];
-for nPair = 1:size(propTablePairs,2)
-%     disp(nPair);
-    pairName1 = [pairName,'1'];
-    pairName2 = [pairName,'2'];
-    row = propTablePairs(nPair).(pairName1);
-    col = propTablePairs(nPair).(pairName2);
-    
-    val = valsVector(nPair);
-
-    RSAmat(row,col) = val; %#ok<AGROW>
-    RSAmat(col,row) = val; %#ok<AGROW>
-end
-
+RSAmat = RSAVectorToMat(valsVector,propTablePairs,'pairName',pairName); %transforms vector to matrix
 %indx matches with variables pair1 and pair2 of propTablePairs
 tblA.newOrder = [1:size(tblA,1)]'; %#ok<NBRAK>
 newOrder = tblA.newOrder;

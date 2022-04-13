@@ -1,6 +1,6 @@
-function [dataP,distribution,mu,sigma] = compareToDistributionN(fileToCompare,varargin)
+ function [dataP,distribution,mu,sigma] = compareToDistributionN(fileToCompare,varargin)
 %takes a mean performance file and compares it against a file of a
-%distribution (.mat), which is a matrix with nRep as row, and nVox as
+%nifti distribution (mp.nii.gz, SD.nii.gz), which is a matrix with nRep as row, and nVox as
 %columns
 side = getArgumentValue('side','moreThan',varargin{:});
 suffix = getArgumentValue('suffix','_mp',varargin{:});
@@ -15,7 +15,6 @@ end
 
 ZImg = getArgumentValue('ZImg',false,varargin{:});
 pImg = getArgumentValue('pImg',true,varargin{:});
-mpFiltered = getArgumentValue('mpFiltered',false,varargin{:});
 ZFiltered = getArgumentValue('ZFiltered',true,varargin{:});
 
 %to filter with cortex
@@ -87,40 +86,6 @@ if ZImg
     disp(['the file tested is: ', fileToCompare,'_Z.nii.gz'])
 end
 
-delete([fileToCompare,'_Perms_Thr05.nii.gz']);
-delete([fileToCompare,'_Perms_Thr01.nii.gz']);
-delete([fileToCompare,'_Perms_Thr001.nii.gz']);
-delete([fileToCompare,'_Perms_Thr0001.nii.gz']);
-delete([fileToCompare,'_Perms_Thr00001.nii.gz']);
-delete([fileToCompare,'_Perms_Thr000001.nii.gz']);
-
-if mpFiltered
-    dataMean.img(dataP.img(:) > 0.05) = 0;
-    if sum(dataMean.img(:) > 0)
-        save_untouch_nii(dataMean,[fileToCompare,'_Perms_Thr05.nii.gz']);
-    end
-
-    dataMean.img(dataP.img(:) > 0.01) = 0;
-    if sum(dataMean.img(:) > 0)
-        save_untouch_nii(dataMean,[fileToCompare,'_Perms_Thr01.nii.gz']);
-    end
-    dataMean.img(dataP.img(:) > 0.001) = 0;
-    if sum(dataMean.img(:) > 0)
-        save_untouch_nii(dataMean,[fileToCompare,'_Perms_Thr001.nii.gz']);
-    end
-    dataMean.img(dataP.img(:) > 0.0001) = 0;
-    if sum(dataP.img(:) > 0)
-        save_untouch_nii(dataMean,[fileToCompare,'_Perms_Thr0001.nii.gz']);        
-    end
-    dataMean.img(dataP.img(:) > 0.00001) = 0;
-    if sum(dataP.img(:) > 0)
-        save_untouch_nii(dataMean,[fileToCompare,'_Perms_Thr00001.nii.gz']);
-    end
-    dataMean.img(dataP.img(:) > 0.000001) = 0;
-    if sum(dataP.img(:) > 0)
-        save_untouch_nii(dataMean,[fileToCompare,'_Perms_Thr000001.nii.gz']);
-    end
-end
 
 delete([fileToCompare,'_Z_Thr05.nii.gz']);
 delete([fileToCompare,'_Z_Thr01.nii.gz']);

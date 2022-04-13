@@ -32,4 +32,5 @@ end
 modelFileName = [dataPath,'\',specie,'sub',sprintf('%03d',participant),'run',sprintf('%02d',runN),'_',regionModel,'.mat'];
 if saveModel
     save(modelFileName,'vector');
+    disp([modelFileName, ' saved']);
 end

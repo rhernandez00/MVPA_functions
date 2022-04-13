@@ -33,6 +33,6 @@ fclose(fid);
 
 if nItem
     textLine = textList{nItem};
-else
+else %show all possible
     textLine = textList;
 end

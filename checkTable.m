@@ -1,5 +1,6 @@
 
 function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad,sub,runN,FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName)
+    noOutImg = true;
     %maskName is used only for gfeat
     %disp(['Checking: ',tablePath]);
     if exist([tablePath])
@@ -112,10 +113,14 @@ function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad
         found = true;
         
         data = dataTable(indx).data;
-%         outImg = dataTable(indx).outImg;
+
 
         if isfield(dataTable,'outImg')
-            outImg = dataTable(indx).outImg;
+            if noOutImg
+                outImg = [];
+            else
+                outImg = dataTable(indx).outImg;
+            end
         else
             outImg = [];
         end

@@ -14,11 +14,15 @@ if oldVersion
                     switch coordSet
                         case 'LOC'
                             coordsPossible = {[24,27,36],[69,26,36]};
+                        case 'b_LOC'
+                            coordsPossible = {[24,27,36],[69,26,36]};
                         case 'R_LOC' %Hierarchy peak 1
                             coordsPossible = {[24,27,36]};
                         case 'L_LOC' %Hierarchy peak 2
                             coordsPossible = {[69,26,36]};
                         case 'V1'
+                            coordsPossible = {[49,22,40],[39,22,40]};
+                        case 'b_V1'
                             coordsPossible = {[49,22,40],[39,22,40]};
                         case 'R_V1' %peak Early visual model
                             coordsPossible = {[49,22,40]};
@@ -39,15 +43,20 @@ if oldVersion
                             error('Set not found');
                     end
                 case 'D'
+                    
                     cxFile = 'Barney2mm';
                     switch coordSet
-                        case 'R_EMG'%Early visual cortex model 11,-25,26
-                            coordsPossible = {[22,18,26]}; 
-                        case 'LMG' %MVPA block peak 1: -7,-39,-24
+%                         case 'R_EMG'%Early visual cortex model 11,-25,26, low version
+%                             coordsPossible = {[22,18,26]}; 
+                        case 'LcSSGV1' %Early visual cortex model -21,-23,4, using human HRF
+                            coordsPossible = {[6,19,25]};
+                        case 'RcSG' %Early visual cortex model  17,-11,-2, using human HRF
+                            coordsPossible = {[25,25,12]};
+                        case 'LMG' %MVPC block peak 1: -7,-39,-24
                             coordsPossible = {[13,11,25]};
-                        case 'RmESG' %MVPA block peak 2: 23,-23,20 
+                        case 'RmESG' %MVPC block peak 2: 23,-23,20 
                             coordsPossible = {[28,19,23]};
-                        case 'LcSSG' %MVPA block peak 3: -23,-27,8
+                        case 'LcSSG' %MVPC block peak 3: -23,-27,8
                             coordsPossible = {[5,17,17]};
                         otherwise
                             disp(coordSet);

@@ -40,12 +40,24 @@ if rnd
     goalVector = shake(goalVector);
 end
 
-for k = 1:lenMap %performs the correlation and gets the results in mapC and mapP
-    if sum(map(k,:)) ~= 0
-        [mapC(k),mapP(k)] = corr(map(k,:)',goalVector,'type',corrType);
-    else
-        mapC(k) = 0;
-        mapP(k) = 1;
+if strcmp(corrType,'Kendall')
+    for k = 1:lenMap %performs the correlation and gets the results in mapC and mapP
+        if sum(map(k,:)) ~= 0
+            [mapC(k)] = rankCorr_Kendall_taua(map(k,:)',goalVector);
+            [~,mapP(k)] = corr(map(k,:)',goalVector,'type','Spearman');
+        else
+            mapC(k) = 0;
+            mapP(k) = 1;
+        end
+    end
+else
+    for k = 1:lenMap %performs the correlation and gets the results in mapC and mapP
+        if sum(map(k,:)) ~= 0
+            [mapC(k),mapP(k)] = corr(map(k,:)',goalVector,'type',corrType);
+        else
+            mapC(k) = 0;
+            mapP(k) = 1;
+        end
     end
 end
 

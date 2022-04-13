@@ -1,5 +1,5 @@
 function h = plotRSA(data,varargin)
-
+error('Deprecated, check drawRSA');
 minVal = getArgumentValue('minVal',0,varargin{:});
 maxVal = getArgumentValue('maxVal',1,varargin{:});
 auto = getArgumentValue('auto',true,varargin{:});

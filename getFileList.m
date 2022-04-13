@@ -1,4 +1,4 @@
-function [imgs,oldPath,nFiles,dataF] = getFileList(folder,varargin)
+function [imgs,oldPath,nFiles,nii] = getFileList(folder,varargin)
 %Loads images in 'folder'. Filters them using 'cortexFile' if cortex=true.
 %If a list of images is provided, then it will only load that list
 cortex = getArgumentValue('cortex',false,varargin{:});
@@ -22,13 +22,13 @@ if isempty(fileList)
     for k = 1:size(fileList,1)
         
         file = [folder,'/',fileList{k}];
-        dataF = load_untouch_niiR(file);
+        nii = load_untouch_niiR(file);
         if cortex %filters out whatever falls outside the mask
-            dataF.img(:) = cortexImg.img(:).*dataF.img(:);
+            nii.img(:) = cortexImg.img(:).*nii.img(:);
             disp('Cortex');
         end
         
-        imgs{k} = dataF.img;
+        imgs{k} = nii.img;
         disp(['File: ', fileList{k}, ' loaded']);
     end
 else
@@ -38,14 +38,14 @@ else
     for k = 1:numel(fileList)
         fileName = fileList{k};
         file = [folder,'\',fileName];
-        dataF = load_untouch_niiR(file);
+        nii = load_untouch_niiR(file);
         if cortex
             %disp(class(dataF))
             %disp(['cortex', class(cortexImg)]);
-            dataF.img(:) = cortexImg.img(:).*dataF.img(:);
+            nii.img(:) = cortexImg.img(:).*nii.img(:);
             disp('Cortex');
         end
-        imgs{k} = dataF.img;
+        imgs{k} = nii.img;
         disp(['File: ', fileList{k}, ' loaded']);
     end
 end

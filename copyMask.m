@@ -34,6 +34,23 @@ for nSub = 1:nSubsTotal
 end
 %%
 % clear all
+% getDriveFolder;
+% maskFolder = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm\others'];
+% maskList = {'sonrisas.nii.gz'};
+% 
+% experiment = 'Emotions';
+% specie = 'D';
+% experimentFolder = ['D:\Raul\data\',experiment,'\',experiment,specie,'STD'];
+% % maskFolder = 'D:\Raul\Gdrive\Faces_Hu\CommonFiles\Human\Faces';
+% for nMask = 1:length(maskList)
+%     fileName = maskList{nMask};
+%     subList = copyMask(fileName,'maskFolder',maskFolder,'experimentFolder',experimentFolder);
+% end
+% 
+
+
+
+% clear all
 % maskFolder = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Faces'];
 % maskList = {'ALLvsFixCross.nii.gz'};
 

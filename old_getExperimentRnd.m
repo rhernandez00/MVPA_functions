@@ -1,6 +1,4 @@
-function getExperimentRnd(repsPath,repResultsPath,nFiles,nReps,varargin)
-%nFiles - number of files used per permutation (for a MVPC this refers to
-%the number of participants)
+function getExperimentRnd(repsPath,repResultsPath,nParticipants,categories,nReps,varargin)
 initialRep = getArgumentValue('initialRep',1,varargin{:});
 testType = getArgumentValue('testType','ttest',varargin{:}); %test to run, takes 'ttest', 'ttest2', 'binomial' 'mean'
 nRuns = getArgumentValue('nRuns',0,varargin{:});
@@ -41,9 +39,9 @@ for j = initialRep:nReps
 
         switch randMode
             case 'byParticipant' %takes n samples from the whole file list
-                imgList = randsample(1:size(fileListFull,2),nFiles,false);
-                fileList = cell(nFiles,1);
-                for k = 1:nFiles
+                imgList = randsample(1:size(fileListFull,2),nParticipants,false);
+                fileList = cell(nParticipants,1);
+                for k = 1:nParticipants
                     fileName = fileListFull{imgList(k)};
                     fileList{k} = fileName;
                 end
@@ -53,10 +51,10 @@ for j = initialRep:nReps
             otherwise
                 error('Wrong randMode, accepts bySubList, byParticipant');
         end
-        if numel(fileList) ~= nFiles
+        if numel(fileList) ~= nParticipants
             pFile = [repResultsFile,'_p.nii.gz'];
             delete(pFile)
-            error(['Wrong number of files expected: ', num2str(nFiles), ', found in list: ', num2str(numel(fileList))]);
+            error(['Wrong number of files expected: ', num2str(nParticipants), ', found in list: ', num2str(numel(fileList))]);
         end
         switch testType
             case 'mean'
@@ -72,9 +70,9 @@ for j = initialRep:nReps
                 binomialSearchlight(repsPath,categories,nRuns,repResultsFile,'fileList',fileList,'filtered',filteredImg,'meanPerf',meanPerfImg,'p',pImg);
             case 'ttest2'
                 disp('Creating second list')
-                imgList = randsample(1:size(fileListFull,2),nFiles,false);
-                fileList2 = cell(nFiles,1);
-                for k = 1:nFiles
+                imgList = randsample(1:size(fileListFull,2),nParticipants,false);
+                fileList2 = cell(nParticipants,1);
+                for k = 1:nParticipants
                     fileName = fileListFull{imgList(k)};
                     fileList2{k} = fileName;
                 end

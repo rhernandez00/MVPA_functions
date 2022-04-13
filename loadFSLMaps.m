@@ -26,8 +26,14 @@ isCoord = ~isempty(coords);
 %checks if the entry is in the table. True - loads into 'data'. False -
 %creates new entry
 % tablePath = [dropboxFolder,'\MVPA\Complex\RSA\dataTable.mat'];
-[found,data,~,outImg] = checkTable(tablePath,isCoord,mask,coords,rad,sub,runN,...
+noOutImg = true;
+if noOutImg
+    [found,data,~,~] = checkTable(tablePath,isCoord,mask,coords,rad,sub,runN,...
     FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName);
+else
+    [found,data,~,outImg] = checkTable(tablePath,isCoord,mask,coords,rad,sub,runN,...
+        FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName); %KEEP FOR OUTIMG
+end
 if found == 0
 %     tablePath
 %     isCoord
@@ -79,25 +85,36 @@ end
 disp(fileName);
 
 if isempty(mask)%if there is no mask, creates a sphere and gets the data from within the sphere
+    disp('Mask is empty, using coords');
     if isempty(coords)
         error('If filterWithMask, then you should supply a mask or coords');
     else
         maskImg = createSphere(fullImg,rad,coords); %creates a sphere
     end
 else %input as either mask or name of the mask
-    if numel(mask) > 1 %input as mask
-        maskImg = logical(mask);
-    else %input as name of mask
+    disp('Mask found')
+    if isstr(mask) %#ok<DISSTR> %input as name of mask
+        disp(['Loading ',maskPath,'\',mask,'.nii.gz']);
         maskData = load_untouch_niiR([maskPath,'\',mask,'.nii.gz']); %loads the designated mask
         maskImg = maskData.img;
         maskImg = single(logical(maskImg)); %binarizes whatever is in mask
+    else
+        disp('Mask was not a string');
+        disp(class(mask));
     end
+    maskImg = logical(maskImg);
 end
 
 
 partialImg = fullImg(maskImg); %gets only the voxels within the selected area
-outImg = fullImg;
-outImg(:) = fullImg(:).*maskImg(:); %filters out the voxels not in the mask
+
+if noOutImg
+    outImg = [];
+else
+    
+    outImg = fullImg;
+    outImg(:) = fullImg(:).*maskImg(:); %filters out the voxels not in the mask
+end
 
 if saveDataTable % This is to save the data loaded in to a table for future use
     nRow = size(dataTable,2) + 1; %selects the new row
@@ -117,8 +134,10 @@ if saveDataTable % This is to save the data loaded in to a table for future use
     dataTable(nRow).nCat = nCat;%category
     dataTable(nRow).task = task;%task
     dataTable(nRow).fileTypeToLoad = fileTypeToLoad; %#ok<*STRNU>
-    dataTable(nRow).outImg = outImg;
-%     dataTable(end)
+    if noOutImg
+    else
+        dataTable(nRow).outImg = outImg;
+    end
     disp([tablePath,' saved']);
     save(tablePath,'dataTable');
 end

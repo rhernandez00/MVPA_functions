@@ -1,4 +1,7 @@
 function [fileListOut,subList,runList] = getSubList(fileListFull)
+%Checks fileListFull and gets the number of subjects available, as well as the number of runs
+%randomly selects one run number for each subject and outputs a list 
+%
     fileList = fileListFull;
 
     fileListOut = {};
@@ -24,7 +27,7 @@ function [fileListOut,subList,runList] = getSubList(fileListFull)
         subList = zeros(1,numel(fileList));
         for nFile = 1:numel(fileList)
             fileName = fileList{nFile};
-            disp(fileName)
+            %disp(fileName)
             placeS = findstr(fileName,'sub'); %#ok<FSTR>
             sub = str2num(fileName(placeS+3:placeS+5)); %#ok<ST2NM>
             subList(nFile) = sub;
@@ -36,8 +39,12 @@ function [fileListOut,subList,runList] = getSubList(fileListFull)
         runList = zeros(1,numel(fileList));
         for nFile = 1:numel(fileList)
             fileName = fileList{nFile};
-            placeS = findstr(fileName,'run');
-            run = str2num(fileName(placeS+3:placeS+4));
+            placeS = findstr(fileName,'run'); %#ok<FSTR>
+            if isempty(placeS) %when there are no runs
+                run = 0;
+            else
+                run = str2num(fileName(placeS+3:placeS+4)); %#ok<ST2NM>
+            end 
             runList(nFile) = run;
         end
         runList = unique(runList);
@@ -47,9 +54,6 @@ function [fileListOut,subList,runList] = getSubList(fileListFull)
     function [fileChoosen,indxList] = getFile(fileList,sub,runN)
 
         [fileList,indxList] = subIn(fileList,sub);
-%         for n = 1:numel(fileList)
-%             disp(fileList{n})
-%         end
         fileList = checkRun(fileList,runN);
         
         if isempty(fileList)
@@ -73,13 +77,18 @@ function [fileListOut,subList,runList] = getSubList(fileListFull)
     end
 
     function fileListOut = checkRun(fileList,runN)
-        indxList = [];
-        for nFile = 1:numel(fileList)
-            fileName = fileList{nFile};
-            if contains(fileName,['run',sprintf('%02d',runN)])
-                indxList = [indxList;nFile]; %#ok<*AGROW>
+        %checks which files in fileList are runN type of run
+        if runN == 0
+            fileListOut = fileList;
+        else
+            indxList = [];
+            for nFile = 1:numel(fileList)
+                fileName = fileList{nFile};
+                if contains(fileName,['run',sprintf('%02d',runN)])
+                    indxList = [indxList;nFile]; %#ok<*AGROW>
+                end
             end
+            fileListOut = fileList(indxList);
         end
-        fileListOut = fileList(indxList);
     end
 end

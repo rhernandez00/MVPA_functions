@@ -1,6 +1,7 @@
 function cortexFile = getCortexFile(cxFile)
 %loads a file to filter the results
 getDriveFolder;
+% driveFolder = ['D:\Raul'];
 switch cxFile
     case 'HBase'
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Human\orig\baseSingle.nii.gz'];
@@ -40,6 +41,10 @@ switch cxFile
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm\others\BOLD.nii.gz'];
     case 'MNI2mmBOLD'
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Human\orig\BOLD.nii.gz'];
+    case 'HCategory'
+        cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Human\orig\Category.nii.gz'];
+    case 'DCategory'
+        cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm\others\Category.nii.gz'];
     otherwise
         cortexFile = cxFile;
 end

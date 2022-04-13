@@ -1,4 +1,8 @@
 function categoriesPossible=createVectors(complete,groupingVar,varargin)
+%creates vector folders from complete struct complete.
+%complete(nRow).onset  - onset
+%complete(nRow).duration - duration
+%complete(nRow).(groupingVar) - integer variable that defines the condition
 createFolders = getArgumentValue('createFolders',true,varargin{:});
 nParticipant = getArgumentValue('participant',1,varargin{:});
 nModel = getArgumentValue('model',1,varargin{:});

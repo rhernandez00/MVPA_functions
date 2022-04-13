@@ -4,6 +4,7 @@ function [dataP,distribution,mu,sigma] = compareToDistribution(fileToCompare,var
 %columns
 side = getArgumentValue('side','moreThan',varargin{:});
 suffix = getArgumentValue('suffix','_mp',varargin{:});
+excludeZero = getArgumentValue('excludeZero',false,varargin{:});
 meanDistributionFile = getArgumentValue('meanDistributionFile',[],varargin{:});
 ZImg = getArgumentValue('ZImg',false,varargin{:});
 mpFiltered = getArgumentValue('mpFiltered',false,varargin{:});
@@ -118,7 +119,16 @@ save_untouch_nii(dataP,[fileToCompare,'_p.nii.gz']);
 
 
 if ZImg
-    ZImgOut.img(:) = (ZImgOut.img(:) - mu)/sigma;
+    if excludeZero
+        for nVox = 1:numel(ZImgOut.img(:))
+            if ZImgOut.img(nVox) ~= 0
+                ZImgOut.img(nVox) = (ZImgOut.img(nVox) - mu)/sigma;
+            end
+        end
+    else
+        ZImgOut.img(:) = (ZImgOut.img(:) - mu)/sigma;
+    end
+    
     save_untouch_nii(ZImgOut,[fileToCompare,'_Z.nii.gz']);
     disp(['the file tested is: ', fileToCompare,'_Z.nii.gz'])
 end
