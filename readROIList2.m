@@ -34,6 +34,8 @@ for nCope = 1:length(copesPossible) %getting every cope
     for nClus = 1:clustersPossible(nCope) %getting every cluster
         clusS = ['clus',sprintf('%03d',nClus)]; %name of cluster field 
         ROIname = ['cope',sprintf('%02d',copeN),'_',sprintf('%02d',nClus)];
+        
+        
         for nCat = 1:length(catTypes) %getting every cat
             catS = catTypes{nCat};
             switch resultsLevel

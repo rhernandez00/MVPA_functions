@@ -15,7 +15,8 @@ pThr = getArgumentValue('pThr',0.05,varargin{:});
 plotStar = getArgumentValue('plotStar',true,varargin{:});
 starSize = getArgumentValue('starSize',30,varargin{:});
 yStar = getArgumentValue('yStar',1,varargin{:});
-
+unbalancedANOVA = getArgumentValue('unbalancedANOVA',false,varargin{:}); %run an unbalanced ANOVA where nCat is tested vs all other cats?
+%the result is plot as a star on the first position
 
 if black
     YColor = 'w';
@@ -124,3 +125,9 @@ if plotStar %plot a star where the results are significant
     end
 end
 
+if unbalancedANOVA %run an unbalanced ANOVA where nCat is tested vs all other cats?
+    [pUnbalanced,tbl,stats] = calculatePOneUnbalanced(e,copeN,clusN,nCat);
+    if pUnbalanced < pThr
+        plot(1,yStar.*maxY,'*','MarkerSize',starSize,'MarkerEdgeColor',starColor);
+    end
+end

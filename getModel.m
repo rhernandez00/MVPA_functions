@@ -42,4 +42,5 @@ fclose(fid);
 
 %creates table to output
 condNum = [0:numel(number)-1]';
-T = table(number',condition',condList',condNum,'VariableNames',{'rep','stim','stimType','cond'});
+runN = zeros(numel(condNum),1);
+T = table(number',condition',condList',condNum,runN,'VariableNames',{'rep','stim','stimType','cond','runN'});

@@ -14,13 +14,15 @@ function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad
         data = [];
         return
     end
-    testing = false; %to check for errors
+    testing = true; %to check for errors
     cleanMode = true; %to erase duplicate cases
     
     if gfeat
+        %disp('getting from gfeat')
         fieldList = {'name','sub','run','FSLModel','specie',...
             'nCat','fileTypeToLoad','task'};
         T = table;
+        
         T.name = maskName;
         T.rad(1) = rad; %in case it is  coords, the rad
         T.sub(1) = sub; %number of subject
@@ -30,6 +32,7 @@ function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad
         T.nCat(1) = nCat;%category
         T.task(1) = task;%task
         T.fileTypeToLoad(1) = fileTypeToLoad; %#ok<*STRNU>
+        
         
         [~,indx] = checkMatchCase(dataTable,T,'fieldList',fieldList);
         
@@ -45,6 +48,7 @@ function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad
             name = maskName;
         end
         if isempty(name)
+        %if strcmp(name,'coord')
             indx7 = indx6;
             indx7(:) = true;
         else

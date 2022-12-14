@@ -1,11 +1,13 @@
-function imgResult = searchlightDissimilarityPair(img1,img2,rad,coords)
-%runs dissimilarity searchlight of rad for img1 and img2 in coords. 
+function imgResult = searchlightDissimilarityPair(img1,img2,searchMatrix,flatCoords)
+%runs dissimilarity searchlight for img1 and img2 on searchMatrix.
+%searchMatrix is a matrix of (nVoxels,searchSpace). Where nVoxels refers to
+%the voxels contained within the search mask, searchSpace refers to the
+%size of the search sphere
 imgResult = zeros(size(img1));
-for nCoord = 1:size(coords,1)
-    center = [coords(nCoord,1),coords(nCoord,2),coords(nCoord,3)];
-    [~,flatCoords] = createSphere(img1,rad,center); %creates a sphere in img1 space
-    vector1 = img1(flatCoords)';
-    vector2 = img2(flatCoords)';
+for nVoxel = 1:size(searchMatrix,1)
+    vector1 = img1(searchMatrix(nVoxel,:))';
+    vector2 = img2(searchMatrix(nVoxel,:))';
     d = pdist2(vector1,vector2,'correlation'); %calculates correlation distance
-    imgResult(center(1),center(2),center(3)) = d;
+    imgResult(flatCoords(nVoxel)) = d;
+    
 end

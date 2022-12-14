@@ -5,7 +5,8 @@ xPos = getArgumentValue('xPos',1:size(matrixVals,2),varargin{:});
 fontSize = getArgumentValue('fontSize',14,varargin{:}); 
 black = getArgumentValue('black',true,varargin{:}); %black background?
 colorN = getArgumentValue('colorN',11,varargin{:}); %color pallet from getColors
-
+plotYLabel = getArgumentValue('plotYLabel',true,varargin{:}); %plotting Y label?
+plotXLabel = getArgumentValue('plotXLabel',true,varargin{:}); %plotting X label?
 lineW = getArgumentValue('lineW',1,varargin{:}); %error bar line width
 
 if black
@@ -35,9 +36,20 @@ for nCat1 = 1:size(matrixVals,2)
     % ------------plotting------------
 end
 
+%X and Y labels
+
+if plotYLabel
+    ylabel('% BOLD signal change','FontSize',fontSize);
+end
+if plotXLabel
+    xlabel('Category','FontSize',fontSize);
+else
+    set(gca,'xtick',[]);
+end
+
 %adding the threhold line
 % pl = plot(minX:maxX,ones(length(minX:maxX),1)*chancePerformance,'--','Color',baseColor,'LineWidth',lineW);
-ax = axis;
+% ax = axis;
 % axis([ax(1),ax(2),ax(3),ax(4)*1.2]);
 % axis([minX,maxX,minY,maxY]);
 set(gca, 'box', 'off')

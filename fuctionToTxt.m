@@ -1,5 +1,5 @@
-function [lostVolumes,totalVolumes,matTxt,fwd,parFile] = movementParToTxt(project,specie,thr,participant,run,varargin)
-%error('deprecated, use functionToTxt');
+function [lostVolumes,totalVolumes,matTxt,vals,fileName] = fuctionToTxt(project,specie,thr,participant,run,varargin)
+
 filesPath = getArgumentValue('pathIn',['G:\My Drive','\Results\',project,'\movement'],varargin{:});
 savePath = getArgumentValue('pathOut',['D:\Raul\results\',project,'\movement\',specie],varargin{:});
 saveTxt = getArgumentValue('saveTxt',true,varargin{:});
@@ -21,13 +21,28 @@ switch functionToUse
 
         cfg.radius = 28;
 
-        parFile  = [filesPath,'\',project,specie,sprintf('%03d',participant),'_run',num2str(run),'.par'];
+        fileName  = [filesPath,'\',project,specie,sprintf('%02d',participant),'run',sprintf('%02d',run),'.par'];
         disp(['Running fwd for: ',cfg.motionparam]);
         [fwd,~]=bramila_framewiseDisplacement(cfg);
         vals = fwd;
     case 'dvars'
-        fileName = [filesPath,'\',project,specie,sprintf('%03d',participant),'_run',num2str(run),'.nii'];
-        vol = load_untouch_nii(fileName);
+        fileName = [filesPath,'\',project,specie,sprintf('%02d',participant),'run',sprintf('%02d',run),'.nii'];
+        folderName = [filesPath,'\',project,specie,sprintf('%02d',participant),'run',sprintf('%02d',run)];
+        
+        if ~exist(fileName,'file') %checking if the file or folder are available. Then load
+            disp(['File ,' fileName,' not found, checking for folder']);
+            if ~exist(folderName,'dir')
+                error(['Folder ,' folderName,' not found']);
+            else
+                disp(['Folder ,' folderName,' found, merging into a 4D file']);
+                vol.img = load_niiFolder(folderName);
+                
+            end
+        else
+            disp(['File ,' fileName,' found, loading...']);
+            vol = load_untouch_nii(fileName);
+        end
+        
         cfg.vol = vol.img;
         [dvars]=bramila_dvars(cfg);
         dvarsZ = [0;zscore(dvars(2:end))];
@@ -37,7 +52,8 @@ switch functionToUse
         
         
 end
-        
+
+
 indx = vals>thr;            
 indxNums = find(indx);
 totalVolumes = numel(indx);
@@ -57,6 +73,6 @@ if saveTxt
     %xlswrite(fileOut,logical(matTxt));
     %dlmwrite(fileOut,matTxt);
 else
-    disp(['No txt created']);
+    disp('No txt created');
 end
 

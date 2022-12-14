@@ -7,7 +7,7 @@ statName = getArgumentValue('statName','t',varargin{:});
 verbosity = getArgumentValue('verbosity','none',varargin{:});
 sphereName = getArgumentValue('sphereName',true,varargin{:});
 searchSphere = getArgumentValue('searchSphere',false,varargin{:});
-minVal = getArgumentValue('minVal',1,varargin{:});
+minVal = getArgumentValue('minVal',1,varargin{:}); %minimum value to be considered a result while checking cluster subpeaks
 
 %gives back the atlas nifti and the table file
 atlasNii = getAtlas(ref,'loadNii',true);

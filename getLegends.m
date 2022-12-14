@@ -20,6 +20,10 @@ switch experiment
                 legendNames = {'CatF','CatB','DogF','DogB','HumF','HumB','Car'};
             case 54
                 legendNames = {'CatF','CatB','DogF','DogB','HumF','HumB','Car'};
+            case 39
+                legendNames = {'Cat','Dog','Hum','Car'};
+            case 40
+                legendNames = {'Cat','Dog','Hum','Car'};
             otherwise
                 FSLModel %#ok<NOPRT>
                 error('Wrong FSLModel')

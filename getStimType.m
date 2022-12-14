@@ -72,6 +72,12 @@ switch experiment
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,12,11,10,8,9,8];
                 options.runs = 6;
+             case 40
+                options.totalStims = 4;
+                options.catlen = 4;
+                options.catTypes = {'Cat','Dog','Hum','Car'};
+                options.stimsPerCat = [1,1,1,1,1,1,1];
+                options.runs = 1:6; 
             case 50
                 options.totalStims = 7;
                 options.catlen = 7;

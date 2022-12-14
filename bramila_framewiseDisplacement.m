@@ -45,12 +45,14 @@ function [fwd,rms]=bramila_framewiseDisplacement(cfg)
         temp=ts(:,1:3);
         temp=radius*temp;
         ts(:,1:3)=temp;
-    else % SPM way
-        % convert degrees into motion in mm;
+    elseif(strcmp(prepro_suite,'spm'))% SPM way
         temp=ts(:,4:6);
         %temp=(2*radius*pi/360)*temp; % UPDATE: it seems they are in radians afterall
         temp=radius*temp;
         ts(:,4:6)=temp;
+    else 
+        error('specify prepro_suite, possible are: spm or fsl-fs');
+        % convert degrees into motion in mm;
     end
     
     dts=diff(ts);

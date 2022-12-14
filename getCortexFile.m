@@ -45,6 +45,13 @@ switch cxFile
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Human\orig\Category.nii.gz'];
     case 'DCategory'
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm\others\Category.nii.gz'];
+    case 'DKunkun'
+        cortexFile = [driveFolder,'\NIRS\Shared\DKunkun.nii.gz']; %this is the default mesh
+    case 'DKunkun2mm'
+        cortexFile = [driveFolder,'\NIRS\Shared\DKunkun2mm.nii.gz'];
+    case 'HAdult'
+        cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\MNI152_T1_2mm_brain.nii.gz']; %this is the default mesh
+        cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Human\orig\baseSingle.nii.gz'];
     otherwise
         cortexFile = cxFile;
 end

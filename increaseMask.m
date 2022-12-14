@@ -5,12 +5,6 @@ fileForMasking = getArgumentValue('mask',[driveFolder,'\Faces_Hu\CommonFiles\b_f
 
 %Creating a mask that contains all the searchlights that created a result
 
-
-
-
-
-
-
 %Loading and binarizing masks
 dataToIncrease = load_untouch_niiR([fileToIncrease,'.nii.gz']);
 matrixToIncrease = dataToIncrease.img;

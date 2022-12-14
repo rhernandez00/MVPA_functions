@@ -7,6 +7,8 @@ function FSLBase = getFSLBase(experiment,FSLModel)
                     FSLBase = 53;
                 case 51
                     FSLBase = 52;
+                case 39
+                    FSLBase = 40;
                 otherwise
                     FSLBase = 8;
             end

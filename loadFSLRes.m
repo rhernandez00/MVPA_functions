@@ -8,6 +8,7 @@ task = getArgumentValue('task',1,varargin{:});
 loadFromBOLD = getArgumentValue('loadFromBOLD',true,varargin{:});
 resultsPath = getArgumentValue('resultsPath','D:\Raul\results',varargin{:});
 gfeat = getArgumentValue('gfeat',false,varargin{:});
+inputZ = getArgumentValue('inputZ',[],varargin{:}); %z used for the gfeat folder
 
 filesPath = getArgumentValue('filesPath',[],varargin{:});
 maskPath = getArgumentValue('maskPath',[driveFolder,'\Results\',experiment,'\ROIs'],varargin{:});
@@ -44,19 +45,20 @@ switch fileTypeToLoad
 end
 
 if gfeat
-    if isempty(inputZ)
-        error('must input Z');
-    end
-    if sub == 0
+    
+    if sub == 0 %loading file from group
+        if isempty(inputZ)
+            error('must input Z');
+        end
         fileName = [resultsPath,'\',experiment,'\GLM\',sprintf('%03d',FSLModel),'\',...
             specie,'\',num2str(inputZ*10),'\run',sprintf('%03d',runN),'.gfeat\cope',...
             num2str(nCat),'.feat\stats\',tileToLoad2,'1.nii.gz'];
-    else
+    else %Loading file from individual
         if runN ~= 0
             error(['Check runN, it must be 0. Currently it is: ',num2str(runN)]);
         end
         fileName = [resultsPath,'\',experiment,'\GLM\',sprintf('%03d',FSLModel),'\',...
-            specie,'\',num2str(inputZ*10),'\sub',sprintf('%03d',sub),'.gfeat\cope',...
+            specie,'\sub',sprintf('%03d',sub),'.gfeat\cope',...
             num2str(nCat),'.feat\stats\',tileToLoad2,'1.nii.gz'];
     end
     BOLD = load_untouch_niiR(fileName);

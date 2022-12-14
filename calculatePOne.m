@@ -1,5 +1,5 @@
 function [pVector,pVectorThr,tVector] = calculatePOne(e,copeN,clusN,nCat,pThr)
-%calculates ttest2 for each cat pair of nCat vs others using data on e
+%calculates ttest2 for each cat pair of nCat vs other using data on e
     catsToTest = pop(1:length(e.catTypes),nCat);
     vals1 = getValsFrome(e,copeN,clusN,nCat);
     pVector = zeros(1,length(e.catTypes));

@@ -1,7 +1,7 @@
 function [results,tableNameS,saveTablePath] = makeTables(filePrefix,resultsPath,distributionFile,varargin)
 
 %distributionFile: 
-specie = getArgumentValue('specie','Dog',varargin{:});
+specie = getArgumentValue('specie','D',varargin{:});
 tThr = getArgumentValue('Thr',0.05,varargin{:}); %thr for t test
 saveTablePath = getArgumentValue('tablePath',resultsPath,varargin{:});
 tablePrefix = getArgumentValue('tablePrefix','',varargin{:});
@@ -16,7 +16,7 @@ separation = getArgumentValue('separation',16,varargin{:}); %minimum separation 
 statMapFile = getArgumentValue('statMapFile','_t_Thr',varargin{:}); %ending of the for main stat
 sphereName = getArgumentValue('sphereName',true,varargin{:});
 searchSphere = getArgumentValue('searchSphere',false,varargin{:});
-minVal = getArgumentValue('minVal',1,varargin{:});
+minVal = getArgumentValue('minVal',1,varargin{:});  %minimum value to be considered a result while checking cluster subpeaks
 valMap = getArgumentValue('valMap',[],varargin{:});
 valName = getArgumentValue('valName','val',varargin{:});
 loadSDMap = getArgumentValue('loadSDMap',true,varargin{:});
@@ -25,30 +25,34 @@ getCohen = getArgumentValue('getCohen',false,varargin{:});
 
 
 switch specie
-    case 'Hum'
+    case 'H'
         if ~strcmp(fileBase,'MNI2mm')
             error('file base doesnt match');
         end
-    case 'Dog'
+    case 'D'
         if ~strcmp(fileBase,'Barney2mm')
             error('file base doesnt match');
         end
-    case 'DogDatta'
+    case 'DDatta'
         if ~strcmp(fileBase,'Datta')
             error('file base doesnt match');
         end
+    otherwise
+        disp(['Specie used is: ',specie]);
+        error('Use as specie H, D or DDatta');
 end
 
 switch specie
-    case 'Dog'
+    case 'D'
         ref = 'Barney2mm'; %reference file for the coordinates
-    case 'Hum'
+    case 'H'
         ref = 'AAL'; %reference file for the coordinates
 %         ref = 'MNI2mm'; %reference file for the coordinates
-    case 'DogDatta'
+    case 'DDatta'
         ref = 'Datta'; %reference file for the coordinates
     otherwise
-        error('Incorrect specie')
+        error('Use as specie H, D or DDatta');
+    
 end
 %loads the table file and the path for the labels
 [~,tableFile,labelsPath] = getAtlas(ref,'loadNii',false);

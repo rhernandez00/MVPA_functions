@@ -12,8 +12,8 @@ saveDataTable = getArgumentValue('saveDataTable',true,varargin{:});
 loadFromBOLD = getArgumentValue('loadFromBOLD',true,varargin{:});
 resultsPath = getArgumentValue('resultsPath','D:\Raul\results',varargin{:});
 gfeat = getArgumentValue('gfeat',false,varargin{:});
-inputZ = getArgumentValue('inputZ',[],varargin{:});
-maskName = getArgumentValue('maskName',[],varargin{:});
+inputZ = getArgumentValue('inputZ',[],varargin{:}); %z used for the gfeat folder
+maskName = getArgumentValue('maskName','coord',varargin{:});
 
 if strcmp(experiment,'Prosody')
     filesPath = [basePath,'\',experiment,'\FSLNoFMSTD\Prosody'];    
@@ -21,18 +21,29 @@ else
     filesPath = [basePath,'\',experiment,'\FSL',experiment,specie,'STD'];
 end
 
+% isCoord = strcmp(
 isCoord = ~isempty(coords);
 
 %checks if the entry is in the table. True - loads into 'data'. False -
 %creates new entry
 % tablePath = [dropboxFolder,'\MVPA\Complex\RSA\dataTable.mat'];
+outImg = [];
 noOutImg = true;
 if noOutImg
+%     fieldsToCheck = {'tablePath','isCoord','mask','coords','rad','sub','runN',...
+%     'FSLModel','specie','nCat','fileTypeToLoad','task','gfeat','maskName'};
+%     for nField = 1:numel(fieldsToCheck)
+%         e.(fieldsToCheck{nField}) = eval(fieldsToCheck{nField});
+%     end
+%     partialImg = []; outImg = [];
+%     return
     [found,data,~,~] = checkTable(tablePath,isCoord,mask,coords,rad,sub,runN,...
     FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName);
+%     error('r')
 else
     [found,data,~,outImg] = checkTable(tablePath,isCoord,mask,coords,rad,sub,runN,...
-        FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName); %KEEP FOR OUTIMG
+        FSLModel,specie,nCat,fileTypeToLoad,task,gfeat,maskName); %#ok<UNRCH> %KEEP FOR OUTIMG
+    
 end
 if found == 0
 %     tablePath
@@ -81,9 +92,10 @@ end
 %Loads an image of results from FSL
 [fullImg,fileName]= loadFSLRes(experiment,specie,FSLModel,sub,runN,nCat,...
     'fileTypeToLoad',fileTypeToLoad,'task',task,'loadFromBOLD',loadFromBOLD,...
-    'resultsPath',resultsPath,'gfeat',gfeat,'filesPath',filesPath,'basePath',basePath);
+    'resultsPath',resultsPath,'gfeat',gfeat,'filesPath',filesPath,'basePath',basePath, 'inputZ',inputZ);
 disp(fileName);
 
+% if strcmp(mask,'coord')
 if isempty(mask)%if there is no mask, creates a sphere and gets the data from within the sphere
     disp('Mask is empty, using coords');
     if isempty(coords)

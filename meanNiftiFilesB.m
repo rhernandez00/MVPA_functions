@@ -1,4 +1,5 @@
-function fileList = meanNiftiFiles(folderIn,fileOut,varargin)
+function fileList = meanNiftiFilesB(folderIn,fileOut,varargin)
+%Same as meanNiftiFiles but used to transform correlation distance to simple correlation 
 %creates a mean file and std to use for non-parametric comparison
 fileList = getArgumentValue('fileList',[],varargin{:});
 cortex = getArgumentValue('cortex',false,varargin{:});
@@ -24,7 +25,7 @@ for i = 1:dimensions(1)
         for k = 1:dimensions(3)
             val = zeros(1,length(imgs));            
             for subj = 1:length(imgs)%subjs
-                val(subj) = imgs{subj}(i,j,k);
+                val(subj) = 1-imgs{subj}(i,j,k);
             end
             if nanCheck
                 nanTotal = sum(isnan(val));
@@ -38,10 +39,7 @@ for i = 1:dimensions(1)
             end
             SDresults.img(i,j,k) = nanstd(val);
             meanCalc(i,j,k) = nanmean(val);
-%             if meanCalc(i,j,k) > 0.5
-%                 val
-%                 error('r')
-%             end
+
         end
     end
 end

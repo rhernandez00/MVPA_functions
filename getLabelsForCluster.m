@@ -37,10 +37,12 @@ labelsStr = strings(1,length(x));
 for nVox = 1:length(x)
      disp([num2str(nVox), ' / ', num2str(length(x))]);
     coords = [x(nVox),y(nVox),z(nVox)];
+    
     [labelName] = getCoordLabel(coords,'ref',ref,'coordType','voxel','atlasNii',atlasNii,...
         'fileBase', fileBase, 'verbosity', verbosity, 'sphereName', sphereName, 'searchSphere', searchSphere);
     labelsStr(nVox) = labelName;
-
+    %disp(labelName)
+    %disp(coords)
 end
 
 labelPoss=unique(labelsStr);

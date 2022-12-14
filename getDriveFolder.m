@@ -7,7 +7,8 @@ switch userName
         %driveFolder = 'C:\Users\Hallgato\Google Drive';
         driveFolder = 'G:\My Drive';
     otherwise
-        error('Check username');
+        driveFolder = 'G:\My Drive';
+        %error('Check username');
 end
 switch userName
     case 'Raul'
@@ -15,6 +16,7 @@ switch userName
     case 'Hallgato'
         dropboxFolder = 'C:\Users\Hallgato\Dropbox';
     otherwise
-        error('Check username');
+        dropboxFolder = 'D:\Raul\Dropbox';
+        %error('Check username');
 end
 clear userName

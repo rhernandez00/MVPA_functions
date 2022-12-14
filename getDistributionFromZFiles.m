@@ -3,10 +3,11 @@ function [clustersSizes, numOfClusters]= getDistributionFromZFiles(rndFolder,dis
 %cluster size for the entire list of the permutated group-based results.
 %Saves the clustersSizes in distributionFile
 zThr = getArgumentValue('zThr',3.1,varargin{:});
-fileEnding = getArgumentValue('fileEnding','_Z',varargin{:});
-thrType = getArgumentValue('thrType','moreThan',varargin{:});
-nReps = getArgumentValue('nReps',[],varargin{:});
-fileList = getArgumentValue('fileList',[],varargin{:});
+fileEnding = getArgumentValue('fileEnding','_Z',varargin{:}); %ending of the files
+thrType = getArgumentValue('thrType','moreThan',varargin{:}); %
+nReps = getArgumentValue('nReps',[],varargin{:}); %number of repetitions to use, default: uses all
+fileList = getArgumentValue('fileList',[],varargin{:}); %list of files to use
+fileSuffix = getArgumentValue('fileSuffix','',varargin{:}); %if the name has a specific start
 if isempty(fileList)
     fileList = getFileListOnly(rndFolder,'fileEnding',fileEnding);
 end

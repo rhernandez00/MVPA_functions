@@ -28,7 +28,6 @@ end
 
 currentFolder = pwd;
 fileListFull = getFileListOnly(repsPath,'fileEnding',fileEnding);
-
 for j = initialRep:nReps
     disp(['repetition ', num2str(j), ' out of ', num2str(nReps)]);
     %disp(fileList);

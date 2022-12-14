@@ -4,7 +4,7 @@
 %columns
 side = getArgumentValue('side','moreThan',varargin{:});
 suffix = getArgumentValue('suffix','_mp',varargin{:});
-mul = getArgumentValue('mul',1,varargin{:});
+mul = getArgumentValue('mul',1,varargin{:}); %
 distributionNifti = getArgumentValue('distributionNifti',[],varargin{:}); %name of file without _mp
 if isempty(distributionNifti)
     error('Must introduce mean file');
