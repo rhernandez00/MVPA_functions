@@ -11,18 +11,19 @@ switch functionToUse
         switch program
             case 'FSL'
                 cfg.prepro_suite =  'fsl-fs';
-                cfg.motionparam =[filesPath,'\',project,specie,sprintf('%02d',participant),'run',sprintf('%02d',run),'.par'];
+                cfg.motionparam =[filesPath,'\',project,specie,sprintf('%03d',participant),'_run',sprintf('%01d',run),'.par'];
             case 'spm'
                 cfg.prepro_suite =  'spm';
-                cfg.motionparam =[filesPath,'\',project,specie,sprintf('%02d',participant),'run',sprintf('%02d',run),'.txt'];
+                cfg.motionparam =[filesPath,'\',project,specie,sprintf('%03d',participant),'_run',sprintf('%01d',run),'.txt'];
             otherwise
                 error([program, ' not available. Programs accepted are FSL and spm']);
         end
 
         cfg.radius = 28;
 
-        parFile  = [filesPath,'\',project,specie,sprintf('%03d',participant),'_run',num2str(run),'.par'];
+        parFile  = [filesPath,'\',project,specie,sprintf('%03d',participant),'_run',sprintf('%01d',run),'.par'];
         disp(['Running fwd for: ',cfg.motionparam]);
+%         cfg
         [fwd,~]=bramila_framewiseDisplacement(cfg);
         vals = fwd;
     case 'dvars'
@@ -49,11 +50,18 @@ if ~isempty(indxNums)
     end
 else
     matTxt = zeros(length(vals),1);
+    matTxt = [];
 end
+m = readmatrix(parFile,'FileType','text');
+matTxt = [m,matTxt];
 fileOut = [savePath,'\sub',sprintf('%03d',participant),'_run',sprintf('%03d',run),'.txt'];
 if saveTxt
+    if ~exist(savePath,'dir')
+        mkdir(savePath);
+    end
     disp(['Writting file: ',fileOut]);
-    writematrix(matTxt,fileOut);
+    %writematrix(matTxt,fileOut);
+    writeTxt(fileOut,matTxt);
     %xlswrite(fileOut,logical(matTxt));
     %dlmwrite(fileOut,matTxt);
 else

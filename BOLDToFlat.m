@@ -1,7 +1,7 @@
 function [imgs,coords] = BOLDToFlat(experiment,specie,sub,runsPossible,varargin)
-%load all BOLDS
-basePath = getArgumentValue('basePath','D:\Raul\data',varargin{:});
-task = getArgumentValue('task',1,varargin{:});
+%load all functional images of the participant and returns them in a cell imgs
+basePath = getArgumentValue('basePath','D:\Raul\data',varargin{:}); %Base path to find the BOLD images
+task = getArgumentValue('task',1,varargin{:}); %Refers to the naming of the BOLD file
 ref = getArgumentValue('ref',[],varargin{:});% in case a specific reference
 volumes = getArgumentValue('volumes',[],varargin{:}); %if empty, it will
 % get it from the first run
@@ -10,7 +10,7 @@ checkVolumes = getArgumentValue('checkVolumes','allowMore',varargin{:}); %takes:
 %'allowMore': allow runs with higher number of volmunes. 'strict': whenever
 %a run has more or less, it gives an error.
 verbose = getArgumentValue('verbose','full',varargin{:}); %full shows everything that is happenning
-zscoreS = getArgumentValue('zscore',true,varargin{:}); %zscoring
+zscoreS = getArgumentValue('zscore',true,varargin{:}); %z-scoring?
 coords = getArgumentValue('coords',[],varargin{:});
 
 if isempty(ref) %by default ref is empty and the fuction uses Barney and MNI

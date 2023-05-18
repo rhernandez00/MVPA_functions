@@ -1,8 +1,8 @@
 
 pThr = 0.05;
-participants = 12;
-runs = 8;
-categories = 2;
+participants = 13;
+runs = 12;
+categories = 3;
 nRepetitions = 100000;
 %calculating distribution
 performanceDistribution = calculateDistribution(participants,runs,categories,nRepetitions);

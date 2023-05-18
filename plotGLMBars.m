@@ -1,7 +1,7 @@
 function plotGLMBars(e,copeN,clusN,nCat,varargin)
 %takes e and plots cope (nCope) and cluster from that cope (clusN)
 FSLModel = getArgumentValue('FSLModel',50,varargin{:});
-xPos = getArgumentValue('xPos',1:length(e.catTypes),varargin{:});
+
 titleS = getArgumentValue('titleS',[],varargin{:});
 plotLegend = getArgumentValue('plotLegend',true,varargin{:});
 plotTitle = getArgumentValue('plotTitle',true,varargin{:});
@@ -17,6 +17,28 @@ starSize = getArgumentValue('starSize',30,varargin{:});
 yStar = getArgumentValue('yStar',1,varargin{:});
 unbalancedANOVA = getArgumentValue('unbalancedANOVA',false,varargin{:}); %run an unbalanced ANOVA where nCat is tested vs all other cats?
 %the result is plot as a star on the first position
+catsToUse = getArgumentValue('catsToUse',[],varargin{:}); %categories to use, default all
+xPos = getArgumentValue('xPos',[],varargin{:}); %custom position order for cats
+if isempty(catsToUse) %if no catsToUse is introduced, then use all
+    catsToUse = 1:length(e.catTypes);
+    if isempty(xPos)
+       xPos = 1:length(e.catTypes); 
+    else
+       if length(xPos) ~= length(catsToUse)
+           error('xPos and catsToUse must the the same size');
+       end
+    end
+else
+    if isempty(xPos)
+       xPos = 1:length(e.catTypes);
+       xPos = xPos(catsToUse);
+    else
+       if length(xPos) ~= length(catsToUse)
+           error('xPos and catsToUse must the the same size');
+       end
+    end
+end
+
 
 if black
     YColor = 'w';
@@ -35,6 +57,7 @@ addpath([dropboxFolder,'\MVPA\Complex\functions']);
 %plot details
 colors = getColors(colorN);
 plotLegendsS = getLegends('Complex',FSLModel);
+plotLegendsS = plotLegendsS(catsToUse); %removing unselected legends
 
 [copeDict,copesPossible] = getCopeDict(FSLModel); %#ok<ASGLU> %gets the list of 
 contrastName = copeDict{copeN}; 
@@ -44,7 +67,10 @@ contrastName = copeDict{copeN};
 b = {};
 er = {};
 hold on
-for nCat1 = 1:length(e.catTypes)
+
+for n = 1:numel(catsToUse)
+    nCat1 = catsToUse(n);
+    
     x = xPos(nCat1);
     vals = getValsFrome(e,copeN,clusN,nCat1);
     
@@ -66,14 +92,12 @@ end
 %     [p,tbl,stats] = anova2(matrixOut,nMeasures,'off');
 
 axVals = axis;
-
 yList = linspace(axVals(3),axVals(4),5);
 
 %     for n = 1:length(p)
 %         yT = yList(n+1);
 %         text(xT,yT,[resLabels{n},' = ',num2str(round(p(n)*1000)/1000)],'FontSize',pFontSize);
 %     end
-
 
 if plotLegend
     plotAx = [];
@@ -116,8 +140,8 @@ set(gca, 'xcolor', 'none')
 if plotStar %plot a star where the results are significant
     maxY = max(get(gca,'ytick'));
     [~,pVectorThr,~] = calculatePOne(e,copeN,clusN,nCat,pThr);%runs ttest2
-    nCats = length(e.catTypes);
-    for nCat1 = 1:nCats
+    for n = 1:numel(catsToUse)
+        nCat1 = catsToUse(n);
         x = xPos(nCat1);
         if pVectorThr(nCat1)
             plot(x,yStar.*maxY,'*','MarkerSize',starSize,'MarkerEdgeColor',starColor)
@@ -126,7 +150,9 @@ if plotStar %plot a star where the results are significant
 end
 
 if unbalancedANOVA %run an unbalanced ANOVA where nCat is tested vs all other cats?
+    maxY = max(get(gca,'ytick'));
     [pUnbalanced,tbl,stats] = calculatePOneUnbalanced(e,copeN,clusN,nCat);
+    disp(['p = ',num2str(pUnbalanced)]);
     if pUnbalanced < pThr
         plot(1,yStar.*maxY,'*','MarkerSize',starSize,'MarkerEdgeColor',starColor);
     end

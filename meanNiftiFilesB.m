@@ -11,6 +11,19 @@ SDImg = getArgumentValue('SDImg',true,varargin{:}); %output std image?
 verbose = getArgumentValue('verbose',true,varargin{:});
 [imgs,oldPath,nFiles,dataF] = getFileList(folderIn,'fileList',fileList,...
     'cortex',cortex,'cortexFile',cortexFile);
+% correctNaN = true;
+% if correctNaN
+%     for nFile = 1:numel(imgs)
+%         indx = isnan(imgs{nFile});
+%         imgs{nFile}(indx) = 0;
+%         if sum(isnan(imgs{nFile}(:))) > 0
+% %             disp();
+%             error(['NaN found: ',num2str(sum(isnan(imgs{nFile}(:)))),' ',folderIn,'\',fileList{nFile}]);
+%             
+%         end
+%     end
+% end
+% error('r')
 nanThreshold = nFiles*nanPercentage;
 meanImg = dataF;
 SDresults = dataF;

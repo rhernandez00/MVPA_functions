@@ -1,6 +1,7 @@
 function createROIForFeatquery(ROIe,specie,ROIFolder,varargin)
 % Takes the coordinates and ROI names from ROIe. Creates spheres using the 
-% coordinates and writes copeList.txt to be used with FeatqueryOnFolder.sh on group-level gfeat results
+% coordinates and writes copeList.txt to be used with FeatqueryOnFolder.sh
+% on gfeat results. Supports individual and group ROIs
 % ROIe is a 1xn structure with:
 % .peakName: name to be used for the ROI
 % .coords: x,y,z coordinate to be used
@@ -24,16 +25,27 @@ for nPeak = 1:size(ROIe,2)
     sphere = createSphere(brainMap,rad,coords);
 
     nii.img = sphere;
-    
-    ROIFile = [ROIFolder,'\',specie,'\',peakName,'.nii.gz'];
-    if ~exist([ROIFolder,'\',specie],'dir')
-        mkdir([ROIFolder,'\',specie]);
+    if isfield(ROIe,'sub')
+        sub = ROIe(nPeak).sub;
+        finalFolder = [ROIFolder,'\',specie,'\sub',sprintf('%03d',sub)];
+        ROIFile = [finalFolder,'\',peakName,'.nii.gz'];
+        if ~exist(finalFolder,'dir')
+            mkdir(finalFolder);
+        end
+    else
+        finalFolder = [ROIFolder,'\',specie];
+        ROIFile = [finalFolder,'\',peakName,'.nii.gz'];
+        if ~exist(finalFolder,'dir')
+            mkdir(finalFolder);
+        end
     end
     save_untouch_nii(nii,ROIFile);
     disp([ROIFile, ' saved']);
     copeList{1,nPeak} = peakName; %adding sphere to list
 end
-
+if isfield(ROIe,'sub')
+    copeList = unique(copeList);
+end
 txtName = [ROIFolder,'\',specie,'\copeList.txt'];
 if exist(txtName,'dir')
     delete(txtName);

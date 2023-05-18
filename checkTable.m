@@ -14,7 +14,7 @@ function [found,data,indx,outImg] = checkTable(tablePath,isCoord,name,coords,rad
         data = [];
         return
     end
-    testing = true; %to check for errors
+    testing = false; %to check for errors
     cleanMode = true; %to erase duplicate cases
     
     if gfeat

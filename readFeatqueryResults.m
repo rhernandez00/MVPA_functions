@@ -11,6 +11,8 @@ function e = readFeatqueryResults(experiment,figureCode,specie,FSLModelBase,Z,va
 % specie: specie of the participant ('D' or 'H')
 % FSLModelBase: model used to interrogate featquery
 fileType = getArgumentValue('fileType','mean',varargin{:}); %either mean or max
+subsPossible = getArgumentValue('subsPossible',[],varargin{:}); %participants to 
+%load. If empty, it means it is a group-level analysis
 resultsPath = getArgumentValue('resultsPath',[],varargin{:});
 if isempty(resultsPath)
     getDriveFolder;
@@ -38,26 +40,54 @@ catTypes = options.catTypes;
 e.catTypes = catTypes; 
 e.ROIList = ROIList;
 e.FSLModelBase = FSLModelBase;
-
-for nROI = 1:numel(ROIList)
-    ROIName = ROIList{nROI};
-    for nCat = 1:length(catTypes) %getting every cat
-        fileName = [resultsPath,'\',ROIName,'_cat',sprintf('%03d',nCat),fileType,'.txt'];
-        fileID = fopen(fileName,'r'); %Reading the txt file
-        try
-            vals = fscanf(fileID,'%f');
-        catch
-            disp([fileName]);
-            error('error, file probably not found')
+if isempty(subsPossible)
+    for nROI = 1:numel(ROIList)
+        ROIName = ROIList{nROI};
+        for nCat = 1:length(catTypes) %getting every cat
+            fileName = [resultsPath,'\',ROIName,'_cat',sprintf('%03d',nCat),fileType,'.txt'];
+            fileID = fopen(fileName,'r'); %Reading the txt file
+            try
+                vals = fscanf(fileID,'%f');
+            catch
+                disp([fileName]);
+                error('error, file probably not found')
+            end
+            fclose(fileID);
+            subsPossible2 = 1:numel(vals);
+            for subN = 1:length(subsPossible2) %getting every participant
+                matrixVals(subN,nCat) = vals(subN)/100; %#ok<AGROW>
+            end
         end
-        fclose(fileID);
-        subsPossible2 = 1:numel(vals);
-        for subN = 1:length(subsPossible2) %getting every participant
-            matrixVals(subN,nCat) = vals(subN)/100; %#ok<AGROW>
-        end
+        e.data.(ROIName) = matrixVals;
+        clear matrixVals
     end
-    e.data.(ROIName) = matrixVals;
-    clear matrixVals
+else %Individual-level results. Added 17/Jan/2023
+     for nROI = 1:numel(ROIList)
+        ROIName = ROIList{nROI};
+        for nCat = 1:length(catTypes) %getting every cat
+            for nSub = 1:numel(subsPossible)
+                sub = subsPossible(nSub);
+                fileName = [resultsPath,'\sub',sprintf('%03d',sub),'\',...
+                    ROIName,'_cat',sprintf('%03d',nCat),fileType,'.txt'];
+                fileID = fopen(fileName,'r'); %Reading the txt file
+                try
+                    vals = fscanf(fileID,'%f');
+                catch
+                    disp([fileName]);
+                    error('error, file probably not found')
+                end
+                fclose(fileID);
+
+                runsPossible = 1:numel(vals);
+
+                for runN = 1:length(runsPossible) %getting every participant
+                    matrixVals.(['sub',sprintf('%03d',sub)])(runN,nCat) = vals(runN)/100;
+                end
+            end
+        end
+        e.data.(ROIName) = matrixVals;
+        clear matrixVals
+     end
 end
 
-                    
+

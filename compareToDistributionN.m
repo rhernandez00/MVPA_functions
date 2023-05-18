@@ -46,7 +46,12 @@ end
 
 nVoxs = length(dataMean.img(:));%size(dataMatrix,2); %#ok<NODEF>
 
+
 for nVox = 1:length(indx)
+    
+    if isempty(indx)
+        break
+    end
     vox = indx(nVox);
     val = dataMean.img(vox);
     mu = dataMu.img(vox);
@@ -83,7 +88,8 @@ end
 
 if ZImg
     save_untouch_nii(ZImgOut,[fileToCompare,'_Z.nii.gz']);
-    disp(['the file tested is: ', fileToCompare,'_Z.nii.gz'])
+%     disp(['the file tested is: ', fileToCompare,suffix])
+    disp(['the output file is: ', fileToCompare,'_Z.nii.gz'])
 end
 
 

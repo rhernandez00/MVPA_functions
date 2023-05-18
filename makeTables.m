@@ -5,7 +5,7 @@ specie = getArgumentValue('specie','D',varargin{:});
 tThr = getArgumentValue('Thr',0.05,varargin{:}); %thr for t test
 saveTablePath = getArgumentValue('tablePath',resultsPath,varargin{:});
 tablePrefix = getArgumentValue('tablePrefix','',varargin{:});
-fileBase = getArgumentValue('fileBase','Barney2mm',varargin{:});
+fileBase = getArgumentValue('fileBase',[],varargin{:});
 calculateClusterSpread = getArgumentValue('calculateClusterSpread',true,varargin{:});
 clusterMin = getArgumentValue('clusterMin',0,varargin{:}); %minimum size of the cluster for the cluster spread
 fileSuffix = getArgumentValue('fileSuffix', '_t',varargin{:});
@@ -26,12 +26,20 @@ getCohen = getArgumentValue('getCohen',false,varargin{:});
 
 switch specie
     case 'H'
-        if ~strcmp(fileBase,'MNI2mm')
-            error('file base doesnt match');
+        if isempty(fileBase)
+            fileBase = 'MNI2mm';
+        else
+            if ~strcmp(fileBase,'MNI2mm')
+                error('file base doesnt match');
+            end
         end
     case 'D'
-        if ~strcmp(fileBase,'Barney2mm')
-            error('file base doesnt match');
+        if isempty(fileBase)
+            fileBase = 'Barney2mm';
+        else
+            if ~strcmp(fileBase,'Barney2mm')
+                error('file base doesnt match');
+            end
         end
     case 'DDatta'
         if ~strcmp(fileBase,'Datta')

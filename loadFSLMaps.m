@@ -11,7 +11,7 @@ tablePath = getArgumentValue('tablePath',[driveFolder,'\Results\',experiment,'\d
 saveDataTable = getArgumentValue('saveDataTable',true,varargin{:});
 loadFromBOLD = getArgumentValue('loadFromBOLD',true,varargin{:});
 resultsPath = getArgumentValue('resultsPath','D:\Raul\results',varargin{:});
-gfeat = getArgumentValue('gfeat',false,varargin{:});
+gfeat = getArgumentValue('gfeat',false,varargin{:}); %individual/group mean?
 inputZ = getArgumentValue('inputZ',[],varargin{:}); %z used for the gfeat folder
 maskName = getArgumentValue('maskName','coord',varargin{:});
 

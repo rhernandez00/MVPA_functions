@@ -56,13 +56,14 @@ x = xyz(1); y = xyz(2); z = xyz(3);
 if isempty(atlasNii)
     atlasNii = getAtlas(ref);
 end
-
+nLabel = atlasNii.img(x,y,z);
 try
     nLabel = atlasNii.img(x,y,z);
 catch
-    disp(x)
-    disp(y)
-    disp(z)
+    x
+    y
+    z
+    
     atlasNii
     disp(coordType)
     disp(coords)

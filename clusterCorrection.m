@@ -66,8 +66,9 @@ else
     % data.img = data.img(:).*data3.img(:);
     %max(data.img(data.img>0))
     %
-    disp([fileToCorrect,' saved'])
+    
     save_untouch_nii(data,[fileToCorrect,'Corrected.nii.gz']);
+    disp([fileToCorrect,'Corrected.nii.gz',' saved'])
     if binarize
         disp('Binarizing')
         data.img = data.img > 0;

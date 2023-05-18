@@ -12,6 +12,7 @@ fileTypeToLoad = getArgumentValue('fileTypeToLoad','z',varargin{:});%accepted ar
 r = getArgumentValue('rad',3,varargin{:}); %radius for sphere in voxel coords
 mask = getArgumentValue('mask',[],varargin{:}); %can be a mask name or a 3D matrix
 nReps = getArgumentValue('nReps',[],varargin{:}); %if a number is introduced,
+gfeat = getArgumentValue('gfeat',false,varargin{:}); %individual/group mean?
 %that will be the number of permutations to run instead of the actual measurement
 modelName = getArgumentValue('modelName','DSMV1',varargin{:}); %in case of using model. Only DSMV1 for now
 
@@ -23,9 +24,9 @@ end
 
 %metrics to calculate
 distanceCorrelation = getArgumentValue('distanceCorrelation',true,varargin{:}); % calculate or not correlation distance
-Spearman = getArgumentValue('Spearman',false,varargin{:});
-Pearson = getArgumentValue('Pearson',false,varargin{:});
-Mah = getArgumentValue('Mah',false,varargin{:});
+Spearman = getArgumentValue('Spearman',false,varargin{:}); %Calculate Spearman?
+Pearson = getArgumentValue('Pearson',false,varargin{:}); %Calculate Pearson?
+Mah = getArgumentValue('Mah',false,varargin{:}); %Calculate Mahalanobis?
 
 [~,~,options] = getStimType(experiment,FSLModel,1,1); %gets info on the experiment
 if isempty(runsPossible) %if empty, gets it from the options
@@ -110,18 +111,18 @@ for nSub = 1:length(subsPossible)
             case 'coord'
                 vector1 = loadFSLMaps(experiment,specie,FSLModel,sub,runN1,nCat1,...
                     'coords',coords,'rad',r,'tablePath',tablePathFile,...
-                    'fileTypeToLoad',fileTypeToLoad);
+                    'fileTypeToLoad',fileTypeToLoad,'gfeat',gfeat);
                 vector2 = loadFSLMaps(experiment,specie,FSLModel,sub,runN2,nCat2,...
                     'coords',coords,'rad',r,'tablePath',tablePathFile,...
-                    'fileTypeToLoad',fileTypeToLoad);
+                    'fileTypeToLoad',fileTypeToLoad,'gfeat',gfeat);
             case 'maskN'
                 disp(['running mask: ', mask])
                 vector1 = loadFSLMaps(experiment,specie,FSLModel,sub,...
                     runN1,nCat1,'mask',mask,'tablePath',tablePathFile,...
-                    'maskPath',maskPath,'fileTypeToLoad',fileTypeToLoad);
+                    'maskPath',maskPath,'fileTypeToLoad',fileTypeToLoad,'gfeat',gfeat);
                 vector2 = loadFSLMaps(experiment,specie,FSLModel,sub,...
                     runN2,nCat2,'mask',mask,'tablePath',tablePathFile,...
-                    'maskPath',maskPath,'fileTypeToLoad',fileTypeToLoad);
+                    'maskPath',maskPath,'fileTypeToLoad',fileTypeToLoad,'gfeat',gfeat);
             case 'model'
                 switch modelName
                     case 'DSMV1'

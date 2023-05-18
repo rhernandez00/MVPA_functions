@@ -8,6 +8,7 @@ colorN = getArgumentValue('colorN',11,varargin{:}); %color pallet from getColors
 plotYLabel = getArgumentValue('plotYLabel',true,varargin{:}); %plotting Y label?
 plotXLabel = getArgumentValue('plotXLabel',true,varargin{:}); %plotting X label?
 lineW = getArgumentValue('lineW',1,varargin{:}); %error bar line width
+xlabelName = getArgumentValue('xlabelName','Category',varargin{:});
 
 if black
     YColor = 'w';
@@ -42,7 +43,7 @@ if plotYLabel
     ylabel('% BOLD signal change','FontSize',fontSize);
 end
 if plotXLabel
-    xlabel('Category','FontSize',fontSize);
+    xlabel(xlabelName,'FontSize',fontSize);
 else
     set(gca,'xtick',[]);
 end

@@ -132,6 +132,33 @@ switch experiment
                 options.stimsPerCat = [12,12,12,12]; %THIS IS WRONG, CHANGE
                 options.runs = 1:12;
         end
+    case 'Emotions'
+        switch FSLModel
+          case 1
+                options.totalStims = 4; %total number of stimuli (sum of stimsPerCat)
+                options.catlen = 4; %number of categories
+                options.catTypes = {'sad','happy','angry','scared'};
+                options.stimsPerCat = [1,1,1,1];
+                options.runs = 1:8;
+        end
+    case 'Sonrisas'
+        switch FSLModel
+          case 1
+                options.totalStims = 2; %total number of stimuli (sum of stimsPerCat)
+                options.catlen = 2; %number of categories
+                options.catTypes = {'neutral','happy'};
+                options.stimsPerCat = [1,1];
+                options.runs = 1:8;
+        end
+    case 'Voice_sens1'
+        switch FSLModel
+          case 6
+                options.totalStims = 7;%total number of stimuli (sum of stimsPerCat)
+                options.catlen = 7;%number of categories
+                options.catTypes = {'Chimpanzee', 'Dogs', 'Engines', 'Foxes', 'Music', 'Non-speech', 'Speech'};
+                options.stimsPerCat = [1,1,1,1,1,1,1];
+                options.runs = 1:5;
+        end
     otherwise
         error('Wrong experiment');
 end

@@ -1,6 +1,5 @@
 function writeCopeList(txtName,copeList)
-
-% delete(txtName);
+%Writes a txt file with a list of the elements in copeList
 
 fileID = fopen(txtName,'w');
 disp(txtName);

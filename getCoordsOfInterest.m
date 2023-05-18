@@ -125,7 +125,30 @@ if oldVersion
                     disp(['regions possible', coordNames]);
                     error('Wrong region');
             end
-                    
+        case 'Emotions'
+            cxFile = 'Barney';
+            coordNames = {'R_rSG','R_PG','R_PC', 'L_rSG', 'L_PG', 'L_PC', 'faces', 'sonrisas'}; %1- R rostral sylvian gyrus, 2- R proreous gyrus 3- R Piriform cortex
+            switch coordSet %THis is in coordinates, should transform to voxel
+                case 'R_rSG'
+                    coordsPossible = {[112,97,66]}; %voxel coordinates SS1
+                    %coordsPossible = {round([18.91,-11.00,4.41])}; %coordinates
+                case 'R_PG'
+                    coordsPossible = {[96,141,59]}; %voxel coordinates SS2
+                    %coordsPossible = {round([10.73,10.50,1.23])}; %coordinates
+                case 'R_PC'
+                    coordsPossible = {[106,115,47]}; %voxel coordinates SS6
+                    %coordsPossible = {round([15.73,-1.50,-4.68])}; %coordinates
+                case 'L_rSG'
+                    coordsPossible = {[38, 97, 66]};
+                case 'L_PG'
+                    coordsPossible = {[54, 141, 59]};
+                case 'L_PC'
+                    coordsPossible = {[44, 115, 47]};
+                case 'faces'
+                    coordsPossible = {[20,66,62]}; %faces
+                case 'sonrisas'
+                    coordsPossible = {[117,97,65]}; %sonrisas
+            end
         otherwise
             error('Wrong experiment');
 

@@ -52,6 +52,14 @@ switch cxFile
     case 'HAdult'
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\MNI152_T1_2mm_brain.nii.gz']; %this is the default mesh
         cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Human\orig\baseSingle.nii.gz'];
+    case 'HLiving'
+        cortexFile = [driveFolder,'\Results\Complex\GLM\Z31\039\','H','\01_Alive.nii.gz']; 
+    case 'DLiving'
+        cortexFile = [driveFolder,'\Results\Complex\GLM\Z31\039\','D','\01_Alive.nii.gz']; 
+    case 'DL_hemisphere'
+        cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm\others\L_hemisphere.nii.gz'];
+    case 'DR_hemisphere'
+        cortexFile = [driveFolder,'\Faces_Hu\CommonFiles\Dogs\Labels2mm\others\R_hemisphere.nii.gz'];
     otherwise
         cortexFile = cxFile;
 end

@@ -21,6 +21,9 @@ else
 end
 
 if createFolders
+    if ~exist([pwd,'\DataStruct'],'dir')
+        mkdir([pwd,'\DataStruct']);
+    end
     cd('DataStruct');
     %folder creation
     mkdir(participantFolder);

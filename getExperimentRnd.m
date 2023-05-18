@@ -7,6 +7,7 @@ nRuns = getArgumentValue('nRuns',0,varargin{:});
 fileEnding = getArgumentValue('fileEnding','',varargin{:});
 filteredImg = getArgumentValue('filtered',false,varargin{:});
 meanPerfImg = getArgumentValue('meanPerf',false,varargin{:});
+nPadding = getArgumentValue('nPadding',3,varargin{:}); %For option byPerm refers to the number of digits used 001 --> 3 digits
 tImg = getArgumentValue('t',true,varargin{:});
 pImg = getArgumentValue('p',true,varargin{:});
 tReference = getArgumentValue('tReference',0,varargin{:});
@@ -37,21 +38,16 @@ for j = initialRep:nReps
     else
         fclose(fopen([repResultsFile,'_p.nii.gz'],'w')); %creates a p file
         %to mark that the script is working on it
-
-        switch randMode
-            case 'byParticipant' %takes n samples from the whole file list
-                imgList = randsample(1:size(fileListFull,2),nFiles,false);
-                fileList = cell(nFiles,1);
-                for k = 1:nFiles
-                    fileName = fileListFull{imgList(k)};
-                    fileList{k} = fileName;
-                end
-            case 'bySubList' %creates a sublist, having a single file per participant               
-                [fileListOut,subList,runList] = getSubList(fileListFull);
-                fileList = getSubList(fileListFull);
-            otherwise
-                error('Wrong randMode, accepts bySubList, byParticipant');
-        end
+%         if isempty(fileListFull)
+%             fileListFull
+%             error('No files found')
+%         end
+%         fileListFull
+        fileList = getFileListRnd(fileListFull,randMode,nFiles,nPadding);
+%         if isempty(fileList)
+%             fileListFull
+%             error('No files found')
+%         end
         if numel(fileList) ~= nFiles
             pFile = [repResultsFile,'_p.nii.gz'];
             delete(pFile)
