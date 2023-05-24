@@ -127,15 +127,16 @@ if oldVersion
             end
         case 'Emotions'
             cxFile = 'Barney';
-            coordNames = {'R_rSG','R_PG','R_PC', 'L_rSG', 'L_PG', 'L_PC', 'faces', 'sonrisas'}; %1- R rostral sylvian gyrus, 2- R proreous gyrus 3- R Piriform cortex
+            coordNames = {'R_rSG','R_PG','R_PC', 'L_rSG', 'L_PG', 'L_PC',...
+                'faces', 'sonrisas', 'R_rSSG', 'R_mESG', 'L_SpG'};
             switch coordSet %THis is in coordinates, should transform to voxel
-                case 'R_rSG'
+                case 'R_rSG' %R rostral sylvian gyrus, 
                     coordsPossible = {[112,97,66]}; %voxel coordinates SS1
                     %coordsPossible = {round([18.91,-11.00,4.41])}; %coordinates
-                case 'R_PG'
+                case 'R_PG' % R proreous gyrus 
                     coordsPossible = {[96,141,59]}; %voxel coordinates SS2
                     %coordsPossible = {round([10.73,10.50,1.23])}; %coordinates
-                case 'R_PC'
+                case 'R_PC' %Piriform cortex
                     coordsPossible = {[106,115,47]}; %voxel coordinates SS6
                     %coordsPossible = {round([15.73,-1.50,-4.68])}; %coordinates
                 case 'L_rSG'
@@ -148,6 +149,12 @@ if oldVersion
                     coordsPossible = {[20,66,62]}; %faces
                 case 'sonrisas'
                     coordsPossible = {[117,97,65]}; %sonrisas
+                case 'R_rSSG'%Sad vs fear. Model 18 
+                    coordsPossible = {[24,27,23]}; 
+                case 'R_mESG'%Anger vs fear. Model 21. Peak 1
+                    coordsPossible = {[27,22,24]}; 
+                case 'L_SpG'%Anger vs fear. Model 21. Peak 2
+                    coordsPossible = {[16,17,25]}; 
             end
         otherwise
             error('Wrong experiment');

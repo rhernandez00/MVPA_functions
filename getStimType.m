@@ -134,12 +134,28 @@ switch experiment
         end
     case 'Emotions'
         switch FSLModel
-          case 1
+            case 1
                 options.totalStims = 4; %total number of stimuli (sum of stimsPerCat)
                 options.catlen = 4; %number of categories
                 options.catTypes = {'sad','happy','angry','scared'};
                 options.stimsPerCat = [1,1,1,1];
                 options.runs = 1:8;
+            case 18
+                options.totalStims = 2; %total number of stimuli (sum of stimsPerCat)
+                options.catlen = 2; %number of categories
+                options.catTypes = {'sad','scared'};
+                options.stimsPerCat = [1,1];
+                options.runs = 1:8;
+            case 21
+                options.totalStims = 2; %total number of stimuli (sum of stimsPerCat)
+                options.catlen = 2; %number of categories
+                options.catTypes = {'angry','scared'};
+                options.stimsPerCat = [1,1];
+                options.runs = 1:8;
+            otherwise
+                disp(['FSLModel: ',num2str(FSLModel)]);
+                error('Model not specified');
+                
         end
     case 'Sonrisas'
         switch FSLModel

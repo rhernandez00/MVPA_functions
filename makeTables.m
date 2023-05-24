@@ -102,7 +102,7 @@ end
 % error('r')
 % --------------AGREGAR ESTA PARTE A LA SALIDA -------------------
 if calculateClusterSpread
-    dataTable = getLabelsForMap(tMap.img,'ref',ref,'fileBase',fileBase,...
+    dataTable = getLabelsForMap(tMap.img,'ref',ref,...
         'clusterMin',clusterMin,'searchSphere',searchSphere,'sphereName',sphereName);
 end
 

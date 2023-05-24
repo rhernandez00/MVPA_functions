@@ -1,7 +1,8 @@
 function [labelName,nLabel] = getCoordLabel(coords,varargin)
-ref = getArgumentValue('ref','Barney2mm',varargin{:});
-coordType = getArgumentValue('coordType','voxel',varargin{:});
-atlasNii = getArgumentValue('atlasNii',[],varargin{:});
+%Determines the label for the given coordinates by checking the ref atlas
+ref = getArgumentValue('ref','Barney2mm',varargin{:}); %atlas to use. Name according to the function getAtlas
+coordType = getArgumentValue('coordType','voxel',varargin{:}); %coordinate type, takes voxel or coord
+atlasNii = getArgumentValue('atlasNii',[],varargin{:}); %nii structure to use to determine the number of label
 verbosity = getArgumentValue('verbosity','full',varargin{:});
 sphereName = getArgumentValue('sphereName',true,varargin{:});
 searchSphere = getArgumentValue('searchSphere',false,varargin{:});
@@ -39,7 +40,6 @@ else
 %     coords2 = coords;
     switch coordType
         case 'voxel'
-%             coords2 = voxelToCoordinates(coords,'ref',fileBase,'verbosity', 'none');
             xyz = coords;
         case 'coord'
             
