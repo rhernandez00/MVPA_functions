@@ -11,10 +11,6 @@ gfeat = getArgumentValue('gfeat',false,varargin{:});
 inputZ = getArgumentValue('inputZ',[],varargin{:}); %z used for the gfeat folder
 
 filesPath = getArgumentValue('filesPath',[],varargin{:});
-maskPath = getArgumentValue('maskPath',[driveFolder,'\Results\',experiment,'\ROIs'],varargin{:});
-tablePath = getArgumentValue('tablePath',[driveFolder,'\Results\',experiment,'\dataTable\dataTable.mat'],varargin{:});
-saveDataTable = getArgumentValue('saveDataTable',false,varargin{:});
-maskName = getArgumentValue('maskName',[],varargin{:});
 
 if isempty(filesPath)
     if strcmp(experiment,'Prosody')

@@ -19,7 +19,7 @@ switch functionToUse
                 error([program, ' not available. Programs accepted are FSL and spm']);
         end
 
-        cfg.radius = 28;
+        cfg.radius = 50; %previously used 28 for dogs
 
         parFile  = [filesPath,'\',project,specie,sprintf('%03d',participant),'_run',sprintf('%01d',run),'.par'];
         disp(['Running fwd for: ',cfg.motionparam]);

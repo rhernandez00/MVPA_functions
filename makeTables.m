@@ -15,7 +15,7 @@ calculateSubPeaks = getArgumentValue('calculateSubPeaks',false,varargin{:});
 separation = getArgumentValue('separation',16,varargin{:}); %minimum separation between peaks
 statMapFile = getArgumentValue('statMapFile','_t_Thr',varargin{:}); %ending of the for main stat
 sphereName = getArgumentValue('sphereName',true,varargin{:});
-searchSphere = getArgumentValue('searchSphere',false,varargin{:});
+searchSphere = getArgumentValue('searchSphere',true,varargin{:});
 minVal = getArgumentValue('minVal',1,varargin{:});  %minimum value to be considered a result while checking cluster subpeaks
 valMap = getArgumentValue('valMap',[],varargin{:});
 valName = getArgumentValue('valName','val',varargin{:});
@@ -92,6 +92,7 @@ if loadSDMap
         SDMap = load_untouch_niiR(SDMapFileName);
         SDMap = SDMap.img;
     catch
+        disp(SDMapFileName)
         error('No SD map');
     end
 else

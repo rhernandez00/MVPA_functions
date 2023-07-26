@@ -4,6 +4,10 @@ unThrImg = getArgumentValue('unThrImg',true,varargin{:});
 removePrevFiles = getArgumentValue('removePrevFiles',true,varargin{:});
 cxFile = getArgumentValue('cortexFile','MNI2mm',varargin{:}); %which cortex to use?
 filterWithReference = false;%filter out voxels outside atlas mask
+searchSphere = getArgumentValue('searchSphere',true,varargin{:}); %get label from sphere search?
+statName = getArgumentValue('statName','Z',varargin{:}); %name of the statistical test
+separation = getArgumentValue('separation',16,varargin{:}); %separation for reporting subpeaks
+pCluster = getArgumentValue('pCluster',0.05,varargin{:}); %not used for any calculation, just to fill the table
 maskType = 'mask'; %takes sphere or mask
 getDriveFolder;
 addpath([dropboxFolder,'\MVPA\',experiment,'\functions']);
@@ -20,17 +24,19 @@ resultsFolder = 'D:\Raul\results';
 % Z = 3.9; %2.3 3.1 3.9
 
 
-searchSphere = false;
+
 switch specie
     case 'H'
         ref = 'AAL';
         fileBase = 'MNI2mm';
+        voxSize = 2;
      case 'D'
         ref = 'Barney2mm';
         fileBase = 'Barney2mm';
+        voxSize = 2;
 end
-voxSize = 2;
-separation = 16;
+
+
 sphereRad = 3; %for the ROIs
 
 
@@ -51,7 +57,7 @@ ROIFolder = [driveFolder,'\Results\',experiment,'\GLM\Z',num2str(Z*10),'\',...
     sprintf('%03d',FSLModel),'\',specie,'\ROI\r',sprintf('%02d',sphereRad),...
     ];
 if ~exist(ROIFolder,'dir')
-    disp([ROIFolder, ' created');
+    disp([ROIFolder, ' created']);
     mkdir(ROIFolder);
 end
 txtName = [ROIFolder,'\copeList.txt'];
@@ -100,14 +106,9 @@ for nCope = 1:length(copesPossible)
     %assigns the voxel coordinates and the label for the peak
 %     try
     if ~isempty(clusterData)
-        clusterData = assignVoxCoords(clusterData,statMap,voxSize,ref); 
+        clusterData = assignVoxCoords(clusterData,statMap,voxSize,ref,'searchSphere',searchSphere); 
     else
         
-%     catch
-%         clusterData.voxel_x(1) = 0;
-%         clusterData.voxel_y(1) = 0;
-%         clusterData.voxel_z(1) = 0;
-%         clusterData.label(1) = 'n';
     end
     baseName = ['cope',sprintf('%02d',nCope),'_'];
     [clusterList]= splitInClusters(statMap); %moved up from line113 3/31/2021
@@ -121,11 +122,11 @@ for nCope = 1:length(copesPossible)
 %         end
         copeInfo = [copeInfo,copeInfoOut]; %#ok<*AGROW>
     end
-    [peaksTable] = getSubPeakTable(statMap,voxSize,separation,'ref',ref,'searchSphere',searchSphere);
+    [peaksTable] = getSubPeakTable(statMap,voxSize,separation,'ref',ref,...
+        'searchSphere',searchSphere,'statName',statName);
     
-    
-%     error('r')
-     dataTable = getLabelsForMap(statMap,'ref',ref,'fileBase',fileBase);
+     clusterExtent = getLabelsForMap(statMap,'ref',ref,'fileBase',...
+         fileBase,'searchSphere',searchSphere,'sphereName',false);
     
      nRow = 1;
     
@@ -142,7 +143,7 @@ for nCope = 1:length(copesPossible)
         [coords(1),coords(2),coords(3)] = flatToXYZ(indx(1),statFiltered,'templateFormat','matrix');
         stat = statFiltered(indx);
         
-        labelPeak = getCoordLabel(coords,'ref',ref,'fileBase',fileBase,'coordType','voxel','searchSphere',true);
+        labelPeak = getCoordLabel(coords,'ref',ref,'fileBase',fileBase,'coordType','voxel','searchSphere',searchSphere);
         
         %Must write what to do with multiple centroids
         runCentroid = false;
@@ -181,12 +182,20 @@ for nCope = 1:length(copesPossible)
     end
     
     if ~isempty(clusterList)
-        sheetName = [contrastName,'_peaks'];
-        writetable(struct2table(res),tableName,'Sheet',sheetName);
-        sheetName = [contrastName,'_clusters'];
-        writetable(struct2table(dataTable),tableName,'Sheet',sheetName);
+        %sheetName = [contrastName,'_peaks'];
+        %writetable(struct2table(res),tableName,'Sheet',sheetName);
         sheetName = [contrastName,'_peaksTable'];
-        writetable(struct2table(peaksTable),tableName,'Sheet',sheetName);
+        peaksTable = struct2table(peaksTable);
+        legendTable = ['Threshold for reporting was Z > ',...
+            sprintf('%.1f', Z),' and a (corrected) cluster significance threshold of p = ',...
+            sprintf('%.2f', pCluster),'. All peaks ≥ ',sprintf('%.0f', separation),...
+            ' mm apart are reported.'];
+        disp(legendTable)
+%         peaksTable{end+1,1} = {legendTable};
+            
+        writetable(peaksTable,tableName,'Sheet',sheetName);
+        sheetName = [contrastName,'_clusters'];
+        writetable(struct2table(clusterExtent),tableName,'Sheet',sheetName);
         sheetName = [contrastName,'_FSLreport'];
         if ~isempty(clusterData) %if nothing in cluster data, skip
             writetable(clusterData,tableName,'Sheet',sheetName);

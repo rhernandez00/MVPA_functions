@@ -12,6 +12,32 @@ function [catGroup,nStim,options] = getStimType(experiment,FSLModel,runN,nCat)
 % stimsPerCat, a list with the number of elements per category
 % runs, a list with the runs available (some FSLModels will have all, some will only have 1)
 switch experiment
+    case 'Actions'
+        switch FSLModel
+          case 1
+                options.totalStims = 16;%total number of stimuli (sum of stimsPerCat)
+                options.catlen = 4;%number of categories
+                options.catTypes = {'actionA','actionB','controlA','controlB'};
+                options.stimsPerCat = [4,4,4,4];
+                options.runs = 1:19;
+         case 2
+                options.totalStims = 4;%total number of stimuli (sum of stimsPerCat)
+                options.catlen = 4;%number of categories
+                options.catTypes = {'actionA','actionB','controlA','controlB'};
+                options.stimsPerCat = [1,1,1,1];
+                options.runs = 1:19;
+            otherwise
+                error('Wrong FSLModel');
+        end
+    case 'Voice_sens1'
+        switch FSLModel
+          case 6
+                options.totalStims = 7;%total number of stimuli (sum of stimsPerCat)
+                options.catlen = 7;%number of categories
+                options.catTypes = {'Chimpanzee', 'Dogs', 'Engines', 'Foxes', 'Music', 'Non-speech', 'Speech'};
+                options.stimsPerCat = [1,1,1,1,1,1,1];
+                options.runs = 1:5;
+        end
     case 'Complex'
         switch FSLModel
             case 3
@@ -166,15 +192,7 @@ switch experiment
                 options.stimsPerCat = [1,1];
                 options.runs = 1:8;
         end
-    case 'Voice_sens1'
-        switch FSLModel
-          case 6
-                options.totalStims = 7;%total number of stimuli (sum of stimsPerCat)
-                options.catlen = 7;%number of categories
-                options.catTypes = {'Chimpanzee', 'Dogs', 'Engines', 'Foxes', 'Music', 'Non-speech', 'Speech'};
-                options.stimsPerCat = [1,1,1,1,1,1,1];
-                options.runs = 1:5;
-        end
+    
     otherwise
         error('Wrong experiment');
 end
