@@ -17,6 +17,13 @@ resultsPath = getArgumentValue('resultsPath',[],varargin{:});
 if isempty(resultsPath)
     getDriveFolder;
     resultsPath = [driveFolder,'\Results\',experiment,'\',figureCode,'\Z',sprintf('%02d',Z*10),'\',specie];
+    if ~exist([resultsPath,'\copeList.txt'],'file')
+        disp([resultsPath,'\copeList.txt not found, cheking without ', 'Z',sprintf('%02d',Z*10)])
+        resultsPath = [driveFolder,'\Results\',experiment,'\',figureCode,'\',specie];
+        if ~exist([resultsPath,'\copeList.txt'],'file')
+            error([resultsPath,'\copeList.txt not found either']);
+        end
+    end
 end
 
 %Reading copeList and saving it in ROIList
@@ -31,10 +38,17 @@ while ischar(tline)
 end
 fclose(fileID);
 fileType = ['_',fileType]; %_max or _mean, this is the output from featquery
-%%
-
+% Getting catTypes used to interrogate with featQuery for FSLModelBase
 [~,~,options] = getStimType(experiment,FSLModelBase,[],1);
-catTypes = options.catTypes;
+catList = options.catTypes;
+catTypes = cell(1,sum(options.stimsPerCat));
+n = 1;
+for nCat = 1:numel(catList)
+    for stimRep = 1:options.stimsPerCat(nCat)
+        catTypes{n} = [catList{nCat},sprintf('%02d',stimRep)];
+        n = n+1;
+    end
+end
 
 %assigning details to e
 e.catTypes = catTypes; 

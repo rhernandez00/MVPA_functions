@@ -32,7 +32,7 @@ dimensions = size(imgs{1});
 %disp(dimensions);
 for i = 1:dimensions(1)
     if verbose
-        disp(['dimension: ',num2str(i), ' / ', num2str(dimensions(1)), ' number of files ', num2str(nFiles)]);    
+        disp([num2str(i), ' / ', num2str(dimensions(1)), ' number of files ', num2str(nFiles), ' for: ', fileOut]);    
     end
     for j = 1:dimensions(2)
         for k = 1:dimensions(3)

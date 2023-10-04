@@ -9,6 +9,7 @@ plotYLabel = getArgumentValue('plotYLabel',true,varargin{:}); %plotting Y label?
 plotXLabel = getArgumentValue('plotXLabel',true,varargin{:}); %plotting X label?
 lineW = getArgumentValue('lineW',1,varargin{:}); %error bar line width
 xlabelName = getArgumentValue('xlabelName','Category',varargin{:});
+barWidth = getArgumentValue('barWidth',0.8,varargin{:});
 
 if black
     YColor = 'w';
@@ -28,7 +29,7 @@ colors = getColors(colorN);
 for nCat1 = 1:size(matrixVals,2)
     vals = matrixVals(:,nCat1);
     x = xPos(nCat1);
-    b = bar(x,mean(vals));
+    b = bar(x,mean(vals),barWidth);
     er = errorbar(x,mean(vals),stdError(vals));
     er.Color = baseColor;
     er.LineWidth = lineW;

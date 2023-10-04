@@ -26,6 +26,18 @@ switch experiment
                 options.catTypes = {'actionA','actionB','controlA','controlB'};
                 options.stimsPerCat = [1,1,1,1];
                 options.runs = 1:19;
+        case 5
+                options.totalStims = 16;%total number of stimuli (sum of stimsPerCat)
+                options.catlen = 2;%number of categories
+                options.catTypes = {'action','control'};
+                options.stimsPerCat = [8,8];
+                options.runs = 1:10;
+        case 6
+                options.totalStims = 8;%total number of stimuli (sum of stimsPerCat)
+                options.catlen = 2;%number of categories
+                options.catTypes = {'action','control'};
+                options.stimsPerCat = [4,4];
+                options.runs = 1:10;
             otherwise
                 error('Wrong FSLModel');
         end
@@ -45,6 +57,7 @@ switch experiment
                 options.catlen = 4;
                 options.catTypes = {'cars','cats','dogs','humans'};
                 options.stimsPerCat = [12,12,12,12];
+                %error('Check labeling of catTypes, it is possible that there are 48 and the code expects 4')
                 options.runs = 1:6;
             case 8
 
@@ -67,42 +80,48 @@ switch experiment
                 options.catlen = 7;
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,7,8,8,8,7,7];
+                error('Check labeling of catTypes')
                 options.runs = 1;
             case 22
                 options.totalStims = 55;
                 options.catlen = 7;
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,8,7,8,6,7,7];
+                error('Check labeling of catTypes')
                 options.runs = 2;
             case 23
                 options.totalStims = 59;
                 options.catlen = 7;
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,8,9,7,8,7,8];
+                error('Check labeling of catTypes')
                 options.runs = 3;
             case 24
                 options.totalStims = 72;
                 options.catlen = 7;
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,10,10,11,11,9,9];
+                error('Check labeling of catTypes')
                 options.runs = 4;
             case 25
                 options.totalStims = 68;
                 options.catlen = 7;
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,11,10,10,10,8,7];
+                error('Check labeling of catTypes')
                 options.runs = 5;
             case 26
                 options.totalStims = 70;
                 options.catlen = 7;
                 options.catTypes = {'cars','catFace','catBody','dogFace','dogBody','humanFace','humanBody'};
                 options.stimsPerCat = [12,12,11,10,8,9,8];
+                error('Check labeling of catTypes')
                 options.runs = 6;
              case 40
                 options.totalStims = 4;
                 options.catlen = 4;
                 options.catTypes = {'Cat','Dog','Hum','Car'};
-                options.stimsPerCat = [1,1,1,1,1,1,1];
+                options.stimsPerCat = [1,1,1,1];
                 options.runs = 1:6; 
             case 50
                 options.totalStims = 7;
@@ -156,6 +175,7 @@ switch experiment
                 options.catlen = 3;
                 options.catTypes = {'cars','cats','dogs','humans'}; %THIS IS WRONG, CHANGE
                 options.stimsPerCat = [12,12,12,12]; %THIS IS WRONG, CHANGE
+                error('Check labeling of catTypes')
                 options.runs = 1:12;
         end
     case 'Emotions'

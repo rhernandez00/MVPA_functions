@@ -182,7 +182,7 @@ for nCope = 1:length(copesPossible)
     end
     
     if ~isempty(clusterList)
-        %sheetName = [contrastName,'_peaks'];
+        sheetName = [contrastName,'_peaks'];
         %writetable(struct2table(res),tableName,'Sheet',sheetName);
         sheetName = [contrastName,'_peaksTable'];
         peaksTable = struct2table(peaksTable);
@@ -198,7 +198,7 @@ for nCope = 1:length(copesPossible)
         writetable(struct2table(clusterExtent),tableName,'Sheet',sheetName);
         sheetName = [contrastName,'_FSLreport'];
         if ~isempty(clusterData) %if nothing in cluster data, skip
-            writetable(clusterData,tableName,'Sheet',sheetName);
+            %writetable(clusterData,tableName,'Sheet',sheetName);
         end
         clear res
     end

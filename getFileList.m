@@ -38,6 +38,7 @@ else
     for k = 1:numel(fileList)
         fileName = fileList{k};
         file = [folder,'\',fileName];
+        disp(file)
         nii = load_untouch_niiR(file);
         if cortex
             %disp(class(dataF))

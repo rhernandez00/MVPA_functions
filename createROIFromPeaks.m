@@ -1,4 +1,6 @@
 function [copeList,copeInfo] = createROIFromPeaks(ROIFolder,clusterData,baseName,specie,sphereRad,contrastName,varargin)
+%Inputs:
+%ROIFolder = output folder, usually ROIFolder = [driveFolder,'\Results\',experiment,'\',figureCode,'\',specie,'\sub',sprintf('%03d',sub)];
 maskType = getArgumentValue('maskType','sphere',varargin{:}); %takes 'sphere' or 'mask'
 clusterList = getArgumentValue('clusterList',[],varargin{:});
 createNii = getArgumentValue('createNii',false,varargin{:});

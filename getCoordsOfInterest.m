@@ -1,16 +1,46 @@
 function [coordsPossible,flatCoord,coordNames] = getCoordsOfInterest(coordSet,varargin)
 % gets a set of coordinates, these are coordinates of interest according to
-% the experiment
+% the experiment. The coords are voxel coordinates
 experiment = getArgumentValue('experiment','Complex',varargin{:});
 specie = getArgumentValue('specie',[],varargin{:});
 oldVersion = getArgumentValue('oldVersion',true,varargin{:});
+
+switch specie
+    case 'D'
+        cxFile = 'Barney2mm';
+    case 'H'
+        cxFile = 'MNI2mm';
+    otherwise
+        cxFile = [];
+end
 if oldVersion
     coordNames = {};
     switch experiment
+        case 'Voice_sens1' %updated 30/Aug/2023
+            switch specie
+                case 'D'
+                    coordNames = {'R_rSSG','L_rSSG','L_mESG','R_SpG'};
+                    switch coordSet
+                        case 'R_rSSG'%8-Speech>noSpeech: 19,-9,24
+                            coordsPossible = {[26,26,25]};
+                        case 'L_rSSG' %8-Speech>noSpeech: -21	-5	22
+                            coordsPossible = {[6,28,24]};
+                        case 'L_mESG'%8-Speech>noSpeech: -15	-21	12
+                            coordsPossible = {[9,20,19]};
+                        case 'L_MG'%10-Hum-Chimp -1	-7	28
+                            coordsPossible = {[16,27,27]};
+                        case 'R_SpG' %6 - speach 1,-13,26
+                            coordsPossible = {[17,24,26]};
+                        otherwise
+                            error('r');
+                    end
+                case 'H'
+                otherwise
+                    error('Wrong specie, accepted D or H')
+            end
         case 'Complex'
             switch specie
                 case 'H'
-                    cxFile = 'MNI2mm';
                     switch coordSet
                         case 'LOC'
                             coordsPossible = {[24,27,36],[69,26,36]};
@@ -43,8 +73,6 @@ if oldVersion
                             error('Set not found');
                     end
                 case 'D'
-                    
-                    cxFile = 'Barney2mm';
                     switch coordSet
 %                         case 'R_EMG'%Early visual cortex model 11,-25,26, low version
 %                             coordsPossible = {[22,18,26]}; 
@@ -64,7 +92,6 @@ if oldVersion
                     end
             end
         case 'Prosody'
-            cxFile = 'Barney2mm';
             coordNames = {'R_mSSG','L_mSSG','L_cSSG','R_rSG','L_PCG',...
                 'L_cESG','L_rSSG'};
 %             coordNames = {'R_mSSG','L_mSSG','L_cSSG','R_rSG','L_PCG',...
@@ -94,7 +121,6 @@ if oldVersion
                     error('Wrong region');
             end
         case 'faceBody'
-            cxFile = 'Barney2mm';
             coordNames = {'L_SpG','L_EMG','R_PHG','R_cSSG'};
             switch coordSet
                 case 'L_SpG' %Model 10. DB peak1
@@ -126,7 +152,6 @@ if oldVersion
                     error('Wrong region');
             end
         case 'Emotions'
-            cxFile = 'Barney';
             coordNames = {'R_rSG','R_PG','R_PC', 'L_rSG', 'L_PG', 'L_PC',...
                 'faces', 'sonrisas', 'R_rSSG', 'R_mESG', 'L_SpG'};
             switch coordSet %THis is in coordinates, should transform to voxel
